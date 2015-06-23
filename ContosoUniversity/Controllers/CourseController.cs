@@ -1,4 +1,5 @@
 ﻿using ContosoUniversity.DataAccess;
+using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -11,11 +12,13 @@ namespace ContosoUniversity.Controllers
     public class CourseController : Controller
     {
         private SchoolContext db = new SchoolContext();
+        private ISchoolUow uow = new SchoolUow();
 
         // GET: Course
         public ActionResult Index(int? selectedDepartment)
         {
-            var departments = db.Departments.OrderBy(q => q.Name).ToList();
+            //var departments = db.Departments.OrderBy(q => q.Name).ToList();
+            var departments = uow.Departments.GetAll().OrderBy(q => q.Name).ToList();
 
             ViewBag.SelectedDepartment = new SelectList(departments, "Id", "Name", selectedDepartment);
 

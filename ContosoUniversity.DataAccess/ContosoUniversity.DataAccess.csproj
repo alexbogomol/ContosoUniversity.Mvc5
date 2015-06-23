@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IRepository.cs" />
+    <Compile Include="Contracts\ISchoolUow.cs" />
+    <Compile Include="EfRepository.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Migrations\201506191859234_InitialCreate.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="SchoolInitializer.cs" />
     <Compile Include="SchoolInterceptorLogging.cs" />
     <Compile Include="SchoolInterceptorTransientErrors.cs" />
+    <Compile Include="SchoolUow.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

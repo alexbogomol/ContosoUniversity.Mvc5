@@ -14,8 +14,8 @@ namespace ContosoUniversity.DataAccess
         {
             _dbContext = new SchoolContext();
             _dbContext.Configuration.LazyLoadingEnabled = false;
-            _dbContext.Configuration.ProxyCreationEnabled = false;
-            _dbContext.Configuration.ValidateOnSaveEnabled = false;
+            //_dbContext.Configuration.ProxyCreationEnabled = false;
+            //_dbContext.Configuration.ValidateOnSaveEnabled = false;
 
             // TODO: we need a factory here (later)
             _courses = new EfRepository<Course>(_dbContext);

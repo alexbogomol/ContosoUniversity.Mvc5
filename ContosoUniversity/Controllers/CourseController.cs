@@ -1,5 +1,4 @@
 ﻿using ContosoUniversity.DataAccess;
-using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -9,25 +8,28 @@ using System.Web.Mvc;
 
 namespace ContosoUniversity.Controllers
 {
-    public class CourseController : Controller
+    public class CourseController : BaseController
     {
         private SchoolContext db = new SchoolContext();
-        private ISchoolUow uow = new SchoolUow();
+
+        public CourseController()
+        {
+            UoW = new SchoolUow();
+        }
 
         // GET: Course
         public ActionResult Index(int? selectedDepartment)
         {
-            //var departments = db.Departments.OrderBy(q => q.Name).ToList();
-            var departments = uow.Departments.GetAll().OrderBy(q => q.Name).ToList();
+            var departments = UoW.Departments.GetAll().OrderBy(q => q.Name).ToList();
 
             ViewBag.SelectedDepartment = new SelectList(departments, "Id", "Name", selectedDepartment);
 
             int departmentID = selectedDepartment.GetValueOrDefault();
 
-            var courses = db.Courses
-                            .Where(c => !selectedDepartment.HasValue || c.DepartmentId == departmentID)
-                            .OrderBy(course => course.Id)
-                            .Include(course => course.Department);
+            var courses = UoW.Courses.GetAll()
+                             .Where(c => !selectedDepartment.HasValue || c.DepartmentId == departmentID)
+                             .OrderBy(course => course.Id)
+                             .Include(course => course.Department);
 
             return View(courses.ToList());
         }

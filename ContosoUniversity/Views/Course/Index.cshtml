@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ContosoUniversity.Models.Course>
+﻿@model ContosoUniversity.ViewModels.Courses.CourseIndexViewModel
 
 @{
     ViewBag.Title = "Courses";
@@ -13,7 +13,7 @@
 @using (Html.BeginForm())
 {
     <p>
-        Select Department: @Html.DropDownList("SelectedDepartment", "All")
+        Select Department: @Html.DropDownList("DepartmentFilter", Model.DepartmentSelectList, "All")
         <input type="submit" value="Filter" class="btn btn-default" />
     </p>
 }
@@ -21,19 +21,22 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Id)
+            @*@Html.DisplayNameFor(model => model.Id)*@
+            Id
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            @*@Html.DisplayNameFor(model => model.Title)*@
+            Title
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Credits)
+            @*@Html.DisplayNameFor(model => model.Credits)*@
+            Credits
         </th>
         <th>Department</th>
         <th>Actions</th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Courses) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Id)
@@ -48,9 +51,9 @@
             @Html.DisplayFor(modelItem => item.Department.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit",    "Edit",    new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete",  "Delete",  new { id = item.Id })
         </td>
     </tr>
 }

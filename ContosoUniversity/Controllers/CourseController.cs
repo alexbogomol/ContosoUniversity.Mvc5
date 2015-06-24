@@ -1,5 +1,6 @@
 ﻿using ContosoUniversity.DataAccess;
 using ContosoUniversity.Models;
+using ContosoUniversity.ViewModels.Courses;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -15,15 +16,15 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Course
-        public ActionResult Index(int? selectedDepartment)
+        public ActionResult Index(int? departmentFilter)
         {
-            ViewBag.SelectedDepartment = PopulateDepartmentsDropDownList(selectedDepartment);
-
-            var courses = UoW.Courses
-                             .GetByDepartment(selectedDepartment)
-                             .OrderBy(course => course.Id);
-
-            return View(courses);
+            return View(new CourseIndexViewModel
+            {
+                DepartmentSelectList = PopulateDepartmentsDropDownList(departmentFilter),
+                Courses = UoW.Courses
+                             .GetByDepartment(departmentFilter)
+                             .OrderBy(course => course.Id)
+            });
         }
 
         // GET: Course/Details/5

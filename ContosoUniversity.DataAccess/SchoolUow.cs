@@ -1,4 +1,5 @@
 ﻿using ContosoUniversity.DataAccess.Contracts;
+using ContosoUniversity.DataAccess.Repositories;
 using ContosoUniversity.Models;
 using System;
 
@@ -7,8 +8,8 @@ namespace ContosoUniversity.DataAccess
     public class SchoolUow : ISchoolUow, IDisposable
     {
         private readonly SchoolContext _dbContext;
-        private readonly EfRepository<Course> _courses;
-        private readonly EfRepository<Department> _departments;
+        private readonly ICoursesRepository _courses;
+        private readonly IRepository<Department> _departments;
 
         public SchoolUow()
         {
@@ -18,11 +19,11 @@ namespace ContosoUniversity.DataAccess
             //_dbContext.Configuration.ValidateOnSaveEnabled = false;
 
             // TODO: we need a factory here (later)
-            _courses = new EfRepository<Course>(_dbContext);
+            _courses = new CoursesRepository(_dbContext);
             _departments = new EfRepository<Department>(_dbContext);
         }
 
-        public IRepository<Course> Courses
+        public ICoursesRepository Courses
         {
             get { return _courses; }
         }

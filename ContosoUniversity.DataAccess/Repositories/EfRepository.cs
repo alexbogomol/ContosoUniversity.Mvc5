@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 
-namespace ContosoUniversity.DataAccess
+namespace ContosoUniversity.DataAccess.Repositories
 {
     /// <summary>
     /// The EF-dependent, generic repository for data access

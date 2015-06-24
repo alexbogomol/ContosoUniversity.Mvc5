@@ -196,10 +196,8 @@ namespace ContosoUniversity.Controllers
         {
             if (multiplier != null)
             {
-                //ViewBag.RowsAffected = 
-                //    db.Database.ExecuteSqlCommand(
-                //        "UPDATE Course SET Credits = Credits * {0}", 
-                //        multiplier);
+                ViewBag.RowsAffected =
+                    UoW.Courses.UpdateCourseCredits(multiplier.GetValueOrDefault());
             }
 
             return View();

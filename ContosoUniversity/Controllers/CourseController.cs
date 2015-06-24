@@ -1,6 +1,5 @@
 ﻿using ContosoUniversity.DataAccess;
 using ContosoUniversity.Models;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -20,14 +19,11 @@ namespace ContosoUniversity.Controllers
         {
             ViewBag.SelectedDepartment = PopulateDepartmentsDropDownList(selectedDepartment);
 
-            int departmentID = selectedDepartment.GetValueOrDefault();
+            var courses = UoW.Courses
+                             .GetByDepartment(selectedDepartment)
+                             .OrderBy(course => course.Id);
 
-            var courses = UoW.Courses.GetAll()
-                             .Where(c => !selectedDepartment.HasValue || c.DepartmentId == departmentID)
-                             .OrderBy(course => course.Id)
-                             .Include(course => course.Department);
-
-            return View(courses.ToList());
+            return View(courses);
         }
 
         // GET: Course/Details/5

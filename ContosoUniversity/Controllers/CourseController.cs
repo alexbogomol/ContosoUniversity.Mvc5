@@ -20,9 +20,7 @@ namespace ContosoUniversity.Controllers
         // GET: Course
         public ActionResult Index(int? selectedDepartment)
         {
-            var departments = UoW.Departments.GetAll().OrderBy(q => q.Name).ToList();
-
-            ViewBag.SelectedDepartment = new SelectList(departments, "Id", "Name", selectedDepartment);
+            ViewBag.SelectedDepartment = PopulateDepartmentsDropDownList(selectedDepartment);
 
             int departmentID = selectedDepartment.GetValueOrDefault();
 
@@ -52,22 +50,21 @@ namespace ContosoUniversity.Controllers
         // GET: Course/Create
         public ActionResult Create()
         {
-            PopulateDepartmentsDropDownList();
+            ViewBag.DepartmentId = PopulateDepartmentsDropDownList();
 
             return View();
         }
 
-        private void PopulateDepartmentsDropDownList(object selectedDepartment = null)
+        private SelectList PopulateDepartmentsDropDownList(object selectedId = null)
         {
-            var departmentsQuery = from d in db.Departments
-                                   orderby d.Name
-                                   select d;
-
-            ViewBag.DepartmentId = new SelectList(
-                items: departmentsQuery, 
-                dataValueField: "Id",
-                dataTextField: "Name",
-                selectedValue: selectedDepartment);
+            var query = from dpt in UoW.Departments.GetAll()
+                        orderby dpt.Name
+                        select dpt;
+            
+            return new SelectList(items: query, 
+                                  dataValueField: "Id",
+                                  dataTextField: "Name",
+                                  selectedValue: selectedId);
         }
 
         // POST: Course/Create
@@ -92,7 +89,7 @@ namespace ContosoUniversity.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
 
-            PopulateDepartmentsDropDownList(course.DepartmentId);
+            ViewBag.DepartmentId = PopulateDepartmentsDropDownList(course.DepartmentId);
 
             return View(course);
         }
@@ -112,7 +109,7 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            PopulateDepartmentsDropDownList(course.DepartmentId);
+            ViewBag.DepartmentId = PopulateDepartmentsDropDownList(course.DepartmentId);
 
             return View(course);
         }
@@ -153,7 +150,7 @@ namespace ContosoUniversity.Controllers
                 }
             }
 
-            PopulateDepartmentsDropDownList(courseToUpdate.DepartmentId);
+            ViewBag.DepartmentId = PopulateDepartmentsDropDownList(courseToUpdate.DepartmentId);
 
             return View(courseToUpdate);
         }

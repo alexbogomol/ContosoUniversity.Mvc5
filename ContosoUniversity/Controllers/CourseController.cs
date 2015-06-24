@@ -10,8 +10,6 @@ namespace ContosoUniversity.Controllers
 {
     public class CourseController : BaseController
     {
-        private SchoolContext db = new SchoolContext();
-
         public CourseController()
         {
             UoW = new SchoolUow();
@@ -39,11 +37,14 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = db.Courses.Find(id);
+
+            var course = UoW.Courses.GetById(id.GetValueOrDefault());
+
             if (course == null)
             {
                 return HttpNotFound();
             }
+
             return View(course);
         }
 
@@ -78,8 +79,9 @@ namespace ContosoUniversity.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Courses.Add(course);
-                    db.SaveChanges();
+                    UoW.Courses.Add(course);
+                    UoW.Commit();
+
                     return RedirectToAction("Index");
                 }
             }
@@ -101,8 +103,8 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            Course course = db.Courses.Find(id);
+            
+            var course = UoW.Courses.GetById(id.GetValueOrDefault());
 
             if (course == null)
             {
@@ -126,7 +128,7 @@ namespace ContosoUniversity.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var courseToUpdate = db.Courses.Find(id);
+            var courseToUpdate = UoW.Courses.GetById(id.GetValueOrDefault());
 
             var updated = TryUpdateModel(courseToUpdate, "", new string[] 
             {
@@ -139,7 +141,7 @@ namespace ContosoUniversity.Controllers
             {
                 try
                 {
-                    db.SaveChanges();
+                    UoW.Commit();
 
                     return RedirectToAction("Index");
                 }
@@ -162,11 +164,14 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Course course = db.Courses.Find(id);
+
+            var course = UoW.Courses.GetById(id.GetValueOrDefault());
+
             if (course == null)
             {
                 return HttpNotFound();
             }
+
             return View(course);
         }
 
@@ -175,9 +180,9 @@ namespace ContosoUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Course course = db.Courses.Find(id);
-            db.Courses.Remove(course);
-            db.SaveChanges();
+            UoW.Courses.Delete(id);
+            UoW.Commit();
+
             return RedirectToAction("Index");
         }
 
@@ -191,22 +196,13 @@ namespace ContosoUniversity.Controllers
         {
             if (multiplier != null)
             {
-                ViewBag.RowsAffected = 
-                    db.Database.ExecuteSqlCommand(
-                        "UPDATE Course SET Credits = Credits * {0}", 
-                        multiplier);
+                //ViewBag.RowsAffected = 
+                //    db.Database.ExecuteSqlCommand(
+                //        "UPDATE Course SET Credits = Credits * {0}", 
+                //        multiplier);
             }
 
             return View();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

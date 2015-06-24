@@ -74,7 +74,7 @@ namespace ContosoUniversity.DataAccess
 
         public void Commit()
         {
-            throw new NotImplementedException();
+            _dbContext.SaveChanges();
         }
 
         #region IDispossable

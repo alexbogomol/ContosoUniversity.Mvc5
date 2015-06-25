@@ -7,7 +7,6 @@ namespace ContosoUniversity.Models
     public class Course
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Display(Name = "Number")]
         public int Id { get; set; }
 
         [StringLength(50, MinimumLength = 3)]

@@ -139,6 +139,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AssignedCourseData.cs" />
+    <Compile Include="ViewModels\Courses\CourseEditForm.cs" />
+    <Compile Include="ViewModels\Courses\CourseCreateForm.cs" />
     <Compile Include="ViewModels\Courses\CourseIndexViewModel.cs" />
     <Compile Include="ViewModels\EnrollmentDateGroup.cs" />
     <Compile Include="ViewModels\InstructorIndexData.cs" />

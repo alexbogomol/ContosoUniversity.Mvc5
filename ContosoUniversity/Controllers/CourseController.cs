@@ -49,9 +49,10 @@ namespace ContosoUniversity.Controllers
         // GET: Course/Create
         public ActionResult Create()
         {
-            ViewBag.DepartmentId = UoW.Departments.GetAll().ToSelectList();
-
-            return View();
+            return View(new CourseCreateForm
+            {
+                DepartmentSelectList = UoW.Departments.GetAll().ToSelectList()
+            });
         }
 
         // POST: Course/Create
@@ -59,13 +60,19 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Credits,DepartmentId")] Course course)
+        public ActionResult Create(CourseCreateForm form)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    UoW.Courses.Add(course);
+                    UoW.Courses.Add(new Course
+                    {
+                        Id = form.Id,
+                        Title = form.Title,
+                        Credits = form.Credits,
+                        DepartmentId = form.DepartmentId
+                    });
                     UoW.Commit();
 
                     return RedirectToAction("Index");
@@ -76,10 +83,10 @@ namespace ContosoUniversity.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.)
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
+            
+            form.DepartmentSelectList = UoW.Departments.GetAll().ToSelectList(form.DepartmentId);
 
-            ViewBag.DepartmentId = UoW.Departments.GetAll().ToSelectList(course.DepartmentId);
-
-            return View(course);
+            return View(form);
         }
 
         // GET: Course/Edit/5
@@ -96,10 +103,15 @@ namespace ContosoUniversity.Controllers
             {
                 return HttpNotFound();
             }
-
-            ViewBag.DepartmentId = UoW.Departments.GetAll().ToSelectList(course.DepartmentId);
-
-            return View(course);
+            
+            return View(new CourseEditForm
+            {
+                Id = course.Id,
+                Title = course.Title,
+                Credits = course.Credits,
+                DepartmentId = course.DepartmentId,
+                DepartmentSelectList = UoW.Departments.GetAll().ToSelectList(course.DepartmentId)
+            });
         }
 
         // POST: Course/Edit/5
@@ -107,14 +119,14 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id)
+        public ActionResult EditPost(CourseEditForm form)
         {
-            if (id == null)
+            if (form == null || !ModelState.IsValid)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var courseToUpdate = UoW.Courses.GetById(id.GetValueOrDefault());
+            var courseToUpdate = UoW.Courses.GetById(form.Id);
 
             var updated = TryUpdateModel(courseToUpdate, "", new string[] 
             {
@@ -138,9 +150,14 @@ namespace ContosoUniversity.Controllers
                 }
             }
 
-            ViewBag.DepartmentId = UoW.Departments.GetAll().ToSelectList(courseToUpdate.DepartmentId);
-
-            return View(courseToUpdate);
+            return View(new CourseEditForm
+            {
+                Id = form.Id,
+                Title = form.Title,
+                Credits = form.Credits,
+                DepartmentId = form.DepartmentId,
+                DepartmentSelectList = UoW.Departments.GetAll().ToSelectList(form.DepartmentId)
+            });
         }
 
         // GET: Course/Delete/5

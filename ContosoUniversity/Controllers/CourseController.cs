@@ -1,4 +1,4 @@
-﻿using ContosoUniversity.DataAccess;
+﻿using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels;
 using ContosoUniversity.ViewModels.Courses;
@@ -11,9 +11,9 @@ namespace ContosoUniversity.Controllers
 {
     public class CourseController : BaseController
     {
-        public CourseController()
+        public CourseController(ISchoolUow uow)
         {
-            UoW = new SchoolUow();
+            UoW = uow;
         }
 
         // GET: Course
@@ -149,15 +149,10 @@ namespace ContosoUniversity.Controllers
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
                 }
             }
+            
+            form.DepartmentSelectList = UoW.Departments.GetAll().ToSelectList(form.DepartmentId);
 
-            return View(new CourseEditForm
-            {
-                Id = form.Id,
-                Title = form.Title,
-                Credits = form.Credits,
-                DepartmentId = form.DepartmentId,
-                DepartmentSelectList = UoW.Departments.GetAll().ToSelectList(form.DepartmentId)
-            });
+            return View(form);
         }
 
         // GET: Course/Delete/5

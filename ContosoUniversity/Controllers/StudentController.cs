@@ -1,6 +1,9 @@
-﻿using ContosoUniversity.DataAccess.Contracts;
+﻿using AutoMapper;
+using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
+using ContosoUniversity.ViewModels.Students;
 using PagedList;
+using System;
 using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -86,7 +89,10 @@ namespace ContosoUniversity.Controllers
         // GET: Student/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new StudentCreateForm
+            {
+                EnrollmentDate = DateTime.Now.Date
+            });
         }
 
         // POST: Student/Create
@@ -94,13 +100,18 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "LastName,FirstMidName,EnrollmentDate")] Student student)
+        public ActionResult Create(StudentCreateForm form)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    UoW.Students.Add(student);
+                    UoW.Students.Add(new Student
+                    {
+                        LastName = form.LastName,
+                        FirstMidName = form.FirstMidName,
+                        EnrollmentDate = form.EnrollmentDate
+                    });
                     UoW.Commit();
                     return RedirectToAction("Index");
                 }
@@ -111,7 +122,7 @@ namespace ContosoUniversity.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
-            return View(student);
+            return View(form);
         }
 
         // GET: Student/Edit/5
@@ -129,24 +140,26 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            return View(student);
+            var form = Mapper.Map<StudentEditForm>(student);
+
+            return View(form);
         }
 
         // POST: Student/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost, ActionName("Edit")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id)
+        public ActionResult Edit(StudentEditForm form)
         {
-            if (id == null)
+            if (form == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var studentToUpdate = UoW.Students.GetById(id.GetValueOrDefault());
+            var updatee = UoW.Students.GetById(form.Id);
 
-            var updated = TryUpdateModel(studentToUpdate, "", new string[] 
+            var updated = TryUpdateModel(updatee, "", new string[] 
             {
                 "LastName",
                 "FirstMidName",
@@ -168,7 +181,7 @@ namespace ContosoUniversity.Controllers
                 }
             }
 
-            return View(studentToUpdate);
+            return View(updatee);
         }
 
         // GET: Student/Delete/5

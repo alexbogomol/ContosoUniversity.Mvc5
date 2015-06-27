@@ -37,8 +37,7 @@ namespace ContosoUniversity.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var students = from s in UoW.Students.GetAll()
-                           select s;
+            var students = UoW.Students.GetAll();
 
             if (!string.IsNullOrEmpty(searchString))
             {

@@ -13,6 +13,9 @@ namespace ContosoUniversity
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // init all mapping registrations
+            AutoMapperConfig.Init();
         }
     }
 }

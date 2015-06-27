@@ -1,4 +1,5 @@
-﻿using ContosoUniversity.DataAccess.Contracts;
+﻿using AutoMapper;
+using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels;
 using ContosoUniversity.ViewModels.Courses;
@@ -103,15 +104,12 @@ namespace ContosoUniversity.Controllers
             {
                 return HttpNotFound();
             }
-            
-            return View(new CourseEditForm
-            {
-                Id = course.Id,
-                Title = course.Title,
-                Credits = course.Credits,
-                DepartmentId = course.DepartmentId,
-                DepartmentSelectList = UoW.Departments.GetAll().ToSelectList(course.DepartmentId)
-            });
+
+            var editform = Mapper.Map<CourseEditForm>(course);
+
+            editform.DepartmentSelectList = UoW.Departments.GetAll().ToSelectList(course.DepartmentId);
+
+            return View(editform);
         }
 
         // POST: Course/Edit/5

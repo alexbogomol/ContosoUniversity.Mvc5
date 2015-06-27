@@ -1,8 +1,7 @@
-﻿using ContosoUniversity.DataAccess;
+﻿using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
 using PagedList;
 using System.Data;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -10,9 +9,12 @@ using System.Web.Mvc;
 
 namespace ContosoUniversity.Controllers
 {
-    public class StudentController : Controller
+    public class StudentController : BaseController
     {
-        private SchoolContext db = new SchoolContext();
+        public StudentController(ISchoolUow uow)
+        {
+            UoW = uow;
+        }
 
         // GET: Student
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -32,7 +34,7 @@ namespace ContosoUniversity.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var students = from s in db.Students
+            var students = from s in UoW.Students.GetAll()
                            select s;
 
             if (!string.IsNullOrEmpty(searchString))
@@ -71,7 +73,7 @@ namespace ContosoUniversity.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Student student = db.Students.Find(id);
+            var student = UoW.Students.GetById(id.GetValueOrDefault());
 
             if (student == null)
             {
@@ -98,8 +100,8 @@ namespace ContosoUniversity.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Students.Add(student);
-                    db.SaveChanges();
+                    UoW.Students.Add(student);
+                    UoW.Commit();
                     return RedirectToAction("Index");
                 }
             }
@@ -119,11 +121,14 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
+
+            var student = UoW.Students.GetById(id.GetValueOrDefault());
+
             if (student == null)
             {
                 return HttpNotFound();
             }
+
             return View(student);
         }
 
@@ -139,7 +144,7 @@ namespace ContosoUniversity.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var studentToUpdate = db.Students.Find(id);
+            var studentToUpdate = UoW.Students.GetById(id.GetValueOrDefault());
 
             var updated = TryUpdateModel(studentToUpdate, "", new string[] 
             {
@@ -152,7 +157,7 @@ namespace ContosoUniversity.Controllers
             {
                 try
                 {
-                    db.SaveChanges();
+                    UoW.Commit();
 
                     return RedirectToAction("Index");
                 }
@@ -179,7 +184,7 @@ namespace ContosoUniversity.Controllers
                 ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
             }
 
-            Student student = db.Students.Find(id);
+            var student = UoW.Students.GetById(id.GetValueOrDefault());
 
             if (student == null)
             {
@@ -196,15 +201,8 @@ namespace ContosoUniversity.Controllers
         {
             try
             {
-                //--> straight-forward
-                //Student student = db.Students.Find(id);
-                //db.Students.Remove(student);
-
-                //--> alternative (better performance)
-                Student student = new Student() { Id = id };
-                db.Entry(student).State = EntityState.Deleted;
-
-                db.SaveChanges();
+                UoW.Students.Delete(id);
+                UoW.Commit();
             }
             catch (RetryLimitExceededException /* dex */)
             {
@@ -213,15 +211,6 @@ namespace ContosoUniversity.Controllers
             }
 
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

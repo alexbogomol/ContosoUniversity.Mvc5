@@ -10,6 +10,13 @@ namespace ContosoUniversity.DataAccess.Repositories
     {
         public StudentsRepository(DbContext context) : base(context) { }
 
+        public override Student GetById(int id)
+        {
+            return DbSet.Include("Enrollments.Course")
+                        .Where(std => std.Id == id)
+                        .SingleOrDefault();
+        }
+
         public IEnumerable<EnrollmentStatistics> GetEnrollmentStatistics()
         {
             string query = @"SELECT EnrollmentDate, COUNT(*) AS StudentCount 

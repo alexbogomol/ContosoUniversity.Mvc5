@@ -52,6 +52,7 @@
     <Compile Include="Contracts\ICoursesRepository.cs" />
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Contracts\ISchoolUow.cs" />
+    <Compile Include="Contracts\IStudentsRepository.cs" />
     <Compile Include="Repositories\CoursesRepository.cs" />
     <Compile Include="Repositories\EfRepository.cs" />
     <Compile Include="Logging\ILogger.cs" />
@@ -86,6 +87,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\StudentsRepository.cs" />
     <Compile Include="SchoolConfiguration.cs" />
     <Compile Include="SchoolContext.cs" />
     <Compile Include="SchoolInitializer.cs" />

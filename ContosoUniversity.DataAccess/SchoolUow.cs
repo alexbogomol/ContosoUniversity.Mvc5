@@ -10,7 +10,7 @@ namespace ContosoUniversity.DataAccess
         private readonly SchoolContext _dbContext;
         private readonly ICoursesRepository _courses;
         private readonly IRepository<Department> _departments;
-        private readonly IRepository<Student> _students;
+        private readonly IStudentsRepository _students;
 
         public SchoolUow()
         {
@@ -22,7 +22,7 @@ namespace ContosoUniversity.DataAccess
             // TODO: we need a factory here (later)
             _courses = new CoursesRepository(_dbContext);
             _departments = new EfRepository<Department>(_dbContext);
-            _students = new EfRepository<Student>(_dbContext);
+            _students = new StudentsRepository(_dbContext);
         }
 
         public ICoursesRepository Courses
@@ -67,7 +67,7 @@ namespace ContosoUniversity.DataAccess
             }
         }
 
-        public IRepository<Student> Students
+        public IStudentsRepository Students
         {
             get { return _students; }
         }

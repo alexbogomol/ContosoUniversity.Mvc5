@@ -15,7 +15,7 @@ namespace ContosoUniversity.DataAccess.Contracts
         void Commit();
 
         // Repositories available
-        IRepository<Student> Students { get; }
+        IStudentsRepository Students { get; }
         IRepository<Enrollment> Enrollments { get; }
         ICoursesRepository Courses { get; }
         IRepository<Department> Departments { get; }

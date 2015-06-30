@@ -48,3 +48,16 @@ The **CourseController** is taken as the first refactoring target for being the 
       `Student/Page3`
 - [ ] Refactor Index action (it's really mess for now)
 - [ ] Calendar drop-down (jquery-ui) for `EnrollmentDate' would be fine
+
+#### Refactoring the InstructorController
+
+##### Tasks for InstructorController
+
+- [x] Refactor the controller to operate on unit-of-work
+- [x] Cleanup Index-action with clear view-model and no use of `ViewBag`
+- [ ] Introduce view-models for action methods
+- [x] Make urls for Master-Detail navigation (Index-action) more friendly.
+     
+      Should be smth like: `/Instructor/11/Course/1050`
+     
+      Instead of: `/Instructor/Index/11?courseID=1050`

@@ -22,7 +22,7 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Instructor
-        public ActionResult Index(int? id, int? courseID)
+        public ActionResult Index(int? instructorId, int? courseId)
         {
             var viewModel = new InstructorIndexData
             {
@@ -30,26 +30,26 @@ namespace ContosoUniversity.Controllers
             };
 
             // instructor was not selected -> no courses to show
-            if (id == null)
+            if (instructorId == null)
             {
                 return View(viewModel);
             }
 
-            viewModel.InstructorId = id.Value;
+            viewModel.InstructorId = instructorId.Value;
 
-            viewModel.Courses = UoW.Instructors.GetById(id.Value).Courses;
+            viewModel.Courses = UoW.Instructors.GetById(instructorId.Value).Courses;
 
             // course was not selected -> no students to show
-            if (courseID == null)
+            if (courseId == null)
             {
                 return View(viewModel);
             }
 
-            viewModel.CourseId = courseID.Value;
+            viewModel.CourseId = courseId.Value;
 
             viewModel.Enrollments = UoW.Enrollments.GetAll()
                                        .Include(e => e.Student)
-                                       .Where(e => e.CourseId == courseID.Value);
+                                       .Where(e => e.CourseId == courseId.Value);
 
             return View(viewModel);
         }

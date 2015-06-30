@@ -48,7 +48,7 @@
             }
         </td>
         <td>
-            @Html.ActionLink("Select",  "Index",   new { id = instructor.Id }) |
+            @Html.ActionLink("Select",  "Index",   new { instructorId = instructor.Id }) |
             @Html.ActionLink("Edit",    "Edit",    new { id = instructor.Id }) |
             @Html.ActionLink("Details", "Details", new { id = instructor.Id }) |
             @Html.ActionLink("Delete",  "Delete",  new { id = instructor.Id })
@@ -74,7 +74,7 @@
             selectedRow = (course.Id == Model.CourseId) ? "success" : "";
             <tr class="@selectedRow">
                 <td>
-                    @Html.ActionLink("Select", "Index", new { courseID = course.Id })
+                    @Html.ActionLink("Select", "Index", new { courseId = course.Id })
                 </td>
                 <td>
                     @course.Id

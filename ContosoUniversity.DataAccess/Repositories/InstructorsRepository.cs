@@ -1,10 +1,12 @@
-﻿using ContosoUniversity.Models;
+﻿using ContosoUniversity.DataAccess.Contracts;
+using ContosoUniversity.Models;
 using System.Data.Entity;
 using System.Linq;
+using System;
 
 namespace ContosoUniversity.DataAccess.Repositories
 {
-    public class InstructorsRepository : EfRepository<Instructor>
+    public class InstructorsRepository : EfRepository<Instructor>, IInstructorsRepository
     {
         public InstructorsRepository(DbContext context) : base(context) { }
 
@@ -16,7 +18,14 @@ namespace ContosoUniversity.DataAccess.Repositories
 
         public override Instructor GetById(int id)
         {
-            return GetAll().Single(i => i.Id == id);
+            return GetAll().Where(i => i.Id == id).Single();
+        }
+
+        public Instructor GetByIdWithOffice(int id)
+        {
+            return DbSet.Include(i => i.OfficeAssignment)
+                        .Where(i => i.Id == id)
+                        .Single();
         }
     }
 }

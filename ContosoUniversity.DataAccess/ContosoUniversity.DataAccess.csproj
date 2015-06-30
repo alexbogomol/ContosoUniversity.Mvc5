@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\ICoursesRepository.cs" />
+    <Compile Include="Contracts\IInstructorsRepository.cs" />
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Contracts\ISchoolUow.cs" />
     <Compile Include="Contracts\IStudentsRepository.cs" />

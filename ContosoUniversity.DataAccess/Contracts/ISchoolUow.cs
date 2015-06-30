@@ -19,7 +19,7 @@ namespace ContosoUniversity.DataAccess.Contracts
         IRepository<Enrollment> Enrollments { get; }
         ICoursesRepository Courses { get; }
         IRepository<Department> Departments { get; }
-        IRepository<Instructor> Instructors { get; }
+        IInstructorsRepository Instructors { get; }
         IRepository<OfficeAssignment> OfficeAssignments { get; }
         IRepository<Person> People { get; }
     }

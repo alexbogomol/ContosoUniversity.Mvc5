@@ -11,7 +11,7 @@ namespace ContosoUniversity.DataAccess
         private readonly ICoursesRepository _courses;
         private readonly IRepository<Department> _departments;
         private readonly IStudentsRepository _students;
-        private readonly IRepository<Instructor> _instructors;
+        private readonly IInstructorsRepository _instructors;
         private readonly IRepository<Enrollment> _enrollments;
 
         public SchoolUow()
@@ -44,7 +44,7 @@ namespace ContosoUniversity.DataAccess
             get { return _enrollments; }
         }
 
-        public IRepository<Instructor> Instructors
+        public IInstructorsRepository Instructors
         {
             get { return _instructors; }
         }

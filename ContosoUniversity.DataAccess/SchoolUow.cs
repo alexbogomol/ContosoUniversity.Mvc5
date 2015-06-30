@@ -11,6 +11,8 @@ namespace ContosoUniversity.DataAccess
         private readonly ICoursesRepository _courses;
         private readonly IRepository<Department> _departments;
         private readonly IStudentsRepository _students;
+        private readonly IRepository<Instructor> _instructors;
+        private readonly IRepository<Enrollment> _enrollments;
 
         public SchoolUow()
         {
@@ -23,6 +25,8 @@ namespace ContosoUniversity.DataAccess
             _courses = new CoursesRepository(_dbContext);
             _departments = new EfRepository<Department>(_dbContext);
             _students = new StudentsRepository(_dbContext);
+            _instructors = new InstructorsRepository(_dbContext);
+            _enrollments = new EfRepository<Enrollment>(_dbContext);
         }
 
         public ICoursesRepository Courses
@@ -37,18 +41,12 @@ namespace ContosoUniversity.DataAccess
 
         public IRepository<Enrollment> Enrollments
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return _enrollments; }
         }
 
         public IRepository<Instructor> Instructors
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return _instructors; }
         }
 
         public IRepository<OfficeAssignment> OfficeAssignments

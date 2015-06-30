@@ -1,6 +1,8 @@
 ﻿using ContosoUniversity.DataAccess;
+using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels;
+using ContosoUniversity.ViewModels.Instructors;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -10,19 +12,21 @@ using System.Web.Mvc;
 
 namespace ContosoUniversity.Controllers
 {
-    public class InstructorController : Controller
+    public class InstructorController : BaseController
     {
         private SchoolContext db = new SchoolContext();
+
+        public InstructorController(ISchoolUow uow)
+        {
+            UoW = uow;
+        }
 
         // GET: Instructor
         public ActionResult Index(int? id, int? courseID)
         {
             var viewModel = new InstructorIndexData
             {
-                Instructors = db.Instructors
-                                .Include(i => i.OfficeAssignment)
-                                .Include(i => i.Courses.Select(c => c.Department))
-                                .OrderBy(i => i.LastName)
+                Instructors = UoW.Instructors.GetAll().OrderBy(i => i.LastName)
             };
 
             // instructor was not selected -> no courses to show
@@ -31,10 +35,9 @@ namespace ContosoUniversity.Controllers
                 return View(viewModel);
             }
 
-            ViewBag.InstructorID = id.Value;
-            viewModel.Courses = viewModel.Instructors
-                                         .Where(i => i.Id == id.Value)
-                                         .Single().Courses;
+            viewModel.InstructorId = id.Value;
+
+            viewModel.Courses = UoW.Instructors.GetById(id.Value).Courses;
 
             // course was not selected -> no students to show
             if (courseID == null)
@@ -42,26 +45,11 @@ namespace ContosoUniversity.Controllers
                 return View(viewModel);
             }
 
-            ViewBag.CourseID = courseID.Value;
-                
-            //--> Lazy Loading
-            //viewModel.Enrollments = viewModel.Courses
-            //                                 .Where(x => x.Id == courseID)
-            //                                 .Single().Enrollments;
+            viewModel.CourseId = courseID.Value;
 
-            //--> Explicit loading
-            var selectedCourse = viewModel.Courses
-                                          .Where(x => x.Id == courseID)
-                                          .Single();
-
-            db.Entry(selectedCourse).Collection(x => x.Enrollments).Load();
-
-            foreach (Enrollment enrollment in selectedCourse.Enrollments)
-            {
-                db.Entry(enrollment).Reference(x => x.Student).Load();
-            }
-
-            viewModel.Enrollments = selectedCourse.Enrollments;
+            viewModel.Enrollments = UoW.Enrollments.GetAll()
+                                       .Include(e => e.Student)
+                                       .Where(e => e.CourseId == courseID.Value);
 
             return View(viewModel);
         }

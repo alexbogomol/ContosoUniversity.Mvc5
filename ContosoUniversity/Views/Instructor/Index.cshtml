@@ -1,4 +1,4 @@
-﻿@model ContosoUniversity.ViewModels.InstructorIndexData
+﻿@model ContosoUniversity.ViewModels.Instructors.InstructorIndexData
 
 @{
     ViewBag.Title = "Instructors";
@@ -22,7 +22,7 @@
 
 @foreach (var instructor in Model.Instructors)
 {
-    selectedRow = (instructor.Id == ViewBag.InstructorID) ? "success" : "";
+    selectedRow = (instructor.Id == Model.InstructorId) ? "success" : "";
     <tr class="@selectedRow">
         <td>
             @Html.DisplayFor(model => instructor.LastName)
@@ -71,7 +71,7 @@
 
         @foreach (var course in Model.Courses)
         {
-            selectedRow = (course.Id == ViewBag.CourseID) ? "success" : "";
+            selectedRow = (course.Id == Model.CourseId) ? "success" : "";
             <tr class="@selectedRow">
                 <td>
                     @Html.ActionLink("Select", "Index", new { courseID = course.Id })

@@ -169,7 +169,7 @@
     <Compile Include="ViewModels\Courses\CourseEditForm.cs" />
     <Compile Include="ViewModels\Courses\CourseCreateForm.cs" />
     <Compile Include="ViewModels\Courses\CourseIndexViewModel.cs" />
-    <Compile Include="ViewModels\InstructorIndexData.cs" />
+    <Compile Include="ViewModels\Instructors\InstructorIndexData.cs" />
     <Compile Include="ViewModels\Students\StudentEditForm.cs" />
     <Compile Include="ViewModels\Students\StudentCreateForm.cs" />
     <Compile Include="ViewModels\ViewModelsExtentions.cs" />

@@ -87,12 +87,13 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\InstructorsRepository.cs" />
     <Compile Include="Repositories\StudentsRepository.cs" />
-    <Compile Include="SchoolConfiguration.cs" />
-    <Compile Include="SchoolContext.cs" />
-    <Compile Include="SchoolInitializer.cs" />
-    <Compile Include="SchoolInterceptorLogging.cs" />
-    <Compile Include="SchoolInterceptorTransientErrors.cs" />
+    <Compile Include="Context\SchoolConfiguration.cs" />
+    <Compile Include="Context\SchoolContext.cs" />
+    <Compile Include="Context\SchoolInitializer.cs" />
+    <Compile Include="Interceptors\SchoolInterceptorLogging.cs" />
+    <Compile Include="Interceptors\SchoolInterceptorTransientErrors.cs" />
     <Compile Include="SchoolUow.cs" />
   </ItemGroup>
   <ItemGroup>

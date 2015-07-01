@@ -73,15 +73,31 @@ namespace ContosoUniversity.Controllers
         // GET: Instructor/Create
         public ActionResult Create()
         {
-            var instructor = new Instructor
+            var form = new InstructorCreateForm
             {
                 Courses = new List<Course>(),
                 HireDate = DateTime.Now.Date
             };
 
-            PopulateAssignedCourseData(instructor);
+            form.AssignedCourses = GetAssignedCourses(form);
 
-            return View();
+            return View(form);
+        }
+
+        private IEnumerable<AssignedCourseData> GetAssignedCourses(InstructorCreateForm form)
+        {
+            var allCourses = UoW.Courses.GetAll();
+            var instructorCourses = new HashSet<int>(form.Courses.Select(c => c.Id));
+
+            foreach (var course in allCourses)
+            {
+                yield return new AssignedCourseData
+                {
+                    CourseId = course.Id,
+                    Title = course.Title,
+                    Assigned = instructorCourses.Contains(course.Id)
+                };
+            }
         }
 
         // POST: Instructor/Create

@@ -1,8 +1,7 @@
-﻿@model ContosoUniversity.Models.Instructor
+﻿@model ContosoUniversity.ViewModels.Instructors.InstructorCreateForm
 
 @{
     ViewBag.Title = "Create";
-    List<ContosoUniversity.ViewModels.AssignedCourseData> courses = ViewBag.Courses;
 }
 
 <h2>Create</h2>
@@ -51,7 +50,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <table>
-                @foreach (var course in courses)
+                @foreach (var course in Model.AssignedCourses)
                 {
                     <tr>
                         <td>

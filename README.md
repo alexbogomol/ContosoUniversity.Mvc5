@@ -47,7 +47,7 @@ The **CourseController** is taken as the first refactoring target for being the 
       
       `Student/Page3`
 - [ ] Refactor Index action (it's really mess for now)
-- [ ] Calendar drop-down (jquery-ui) for `EnrollmentDate' would be fine
+- [ ] Calendar drop-down (jquery-ui) for `EnrollmentDate` on *Create* and *Edit*
 
 #### Refactoring the InstructorController
 
@@ -61,3 +61,7 @@ The **CourseController** is taken as the first refactoring target for being the 
       Should be smth like: `/Instructor/11/Course/1050`
      
       Instead of: `/Instructor/Index/11?courseID=1050`
+
+- [ ] Multi-checkbox widget for asssigned courses
+- [ ] Make this widget partial for better reuse
+- [ ] Calendar drop-down (jquery-ui) for `HireDate` on *Create* and *Edit*

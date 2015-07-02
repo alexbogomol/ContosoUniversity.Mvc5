@@ -73,29 +73,31 @@ namespace ContosoUniversity.Controllers
         // GET: Instructor/Create
         public ActionResult Create()
         {
-            var form = new InstructorCreateForm
+            return View(new InstructorCreateForm
             {
-                Courses = new List<Course>(),
+                AssignedCourses = GetCoursesCheckList(),
                 HireDate = DateTime.Now.Date
-            };
-
-            form.AssignedCourses = GetAssignedCourses(form);
-
-            return View(form);
+            });
         }
 
-        private IEnumerable<AssignedCourseData> GetAssignedCourses(InstructorCreateForm form)
+        private IEnumerable<AssignedCourseOption> GetCoursesCheckList(int instructorId = -1)
         {
-            var allCourses = UoW.Courses.GetAll();
-            var instructorCourses = new HashSet<int>(form.Courses.Select(c => c.Id));
+            var availableCourses = UoW.Courses.GetAll();
 
-            foreach (var course in allCourses)
+            IEnumerable<int> assignedIds = new List<int> { };
+
+            if (instructorId != -1)
             {
-                yield return new AssignedCourseData
+                assignedIds = UoW.Instructors.GetById(instructorId).Courses.Select(c => c.Id);
+            }
+
+            foreach (var course in availableCourses)
+            {
+                yield return new AssignedCourseOption
                 {
                     CourseId = course.Id,
                     Title = course.Title,
-                    Assigned = instructorCourses.Contains(course.Id)
+                    Assigned = assignedIds.Contains(course.Id)
                 };
             }
         }
@@ -153,11 +155,11 @@ namespace ContosoUniversity.Controllers
         {
             var allCourses = UoW.Courses.GetAll();
             var instructorCourses = new HashSet<int>(instructor.Courses.Select(c => c.Id));
-            var viewModel = new List<AssignedCourseData>();
+            var viewModel = new List<AssignedCourseOption>();
 
             foreach (var course in allCourses)
             {
-                viewModel.Add(new AssignedCourseData
+                viewModel.Add(new AssignedCourseOption
                 {
                     CourseId = course.Id,
                     Title = course.Title,

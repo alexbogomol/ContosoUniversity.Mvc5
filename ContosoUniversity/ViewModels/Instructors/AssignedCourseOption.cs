@@ -1,6 +1,6 @@
 ﻿namespace ContosoUniversity.ViewModels.Instructors
 {
-    public class AssignedCourseData
+    public class AssignedCourseOption
     {
         public int CourseId { get; set; }
         public string Title { get; set; }

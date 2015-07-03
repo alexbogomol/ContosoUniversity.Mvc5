@@ -1,4 +1,5 @@
-﻿using ContosoUniversity.DataAccess.Contracts;
+﻿using AutoMapper;
+using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels.Instructors;
 using System;
@@ -157,67 +158,56 @@ namespace ContosoUniversity.Controllers
 
             var instructor = UoW.Instructors.GetById(id.Value);
 
-            PopulateAssignedCourseData(instructor);
-
             if (instructor == null)
             {
                 return HttpNotFound();
             }
 
-            return View(instructor);
-        }
+            var form = Mapper.Map<InstructorEditForm>(instructor);
 
-        private void PopulateAssignedCourseData(Instructor instructor)
-        {
-            var allCourses = UoW.Courses.GetAll();
-            var instructorCourses = new HashSet<int>(instructor.Courses.Select(c => c.Id));
-            var viewModel = new List<AssignedCourseOption>();
+            form.AssignedCourses = GetCoursesCheckList(instructor.Id);
 
-            foreach (var course in allCourses)
-            {
-                viewModel.Add(new AssignedCourseOption
-                {
-                    CourseId = course.Id,
-                    Title = course.Title,
-                    Assigned = instructorCourses.Contains(course.Id)
-                });
-            }
-
-            ViewBag.Courses = viewModel;
+            return View(form);
         }
 
         // POST: Instructor/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost, ActionName("Edit")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id, string[] selectedCourses)
+        public ActionResult Edit(InstructorEditForm form)
         {
-            if (id == null)
+            if (form == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var instructorToUpdate = UoW.Instructors.GetById(id.Value);
+            var updatee = UoW.Instructors.GetById(form.Id);
 
-            var updated = TryUpdateModel(instructorToUpdate, "", new string[] 
+            var updated = TryUpdateModel(updatee, "", new string[] 
             {
                 "LastName",
                 "FirstMidName",
-                "HireDate",
-                "OfficeAssignment"
+                "HireDate"
             });
 
             if (updated)
             {
                 try
                 {
-                    if (string.IsNullOrWhiteSpace(instructorToUpdate.OfficeAssignment.Location))
+                    if (string.IsNullOrWhiteSpace(form.OfficeAssignmentLocation))
                     {
-                        instructorToUpdate.OfficeAssignment = null;
+                        updatee.OfficeAssignment = null;
+                    }
+                    else
+                    {
+                        updatee.OfficeAssignment = new OfficeAssignment
+                        {
+                            Location = form.OfficeAssignmentLocation
+                        };
                     }
 
-                    UpdateInstructorCourses(selectedCourses, instructorToUpdate);
+                    UpdateInstructorCourses(form.SelectedCourses, updatee);
 
                     UoW.Commit();
 
@@ -230,12 +220,12 @@ namespace ContosoUniversity.Controllers
                 }
             }
 
-            PopulateAssignedCourseData(instructorToUpdate);
+            form.AssignedCourses = GetCoursesCheckList(form.Id);
 
-            return View(instructorToUpdate);
+            return View(form);
         }
 
-        private void UpdateInstructorCourses(string[] selectedCourses, Instructor instructorToUpdate)
+        private void UpdateInstructorCourses(int[] selectedCourses, Instructor instructorToUpdate)
         {
             if (selectedCourses == null)
             {
@@ -243,12 +233,12 @@ namespace ContosoUniversity.Controllers
                 return;
             }
 
-            var selectedCoursesHS = new HashSet<string>(selectedCourses);
+            var selectedCoursesHS = new HashSet<int>(selectedCourses);
             var instructorCourses = new HashSet<int>(instructorToUpdate.Courses.Select(c => c.Id));
 
             foreach (var course in UoW.Courses.GetAll())
             {
-                if (selectedCoursesHS.Contains(course.Id.ToString()))
+                if (selectedCoursesHS.Contains(course.Id))
                 {
                     if (!instructorCourses.Contains(course.Id))
                     {

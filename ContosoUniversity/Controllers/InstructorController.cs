@@ -1,6 +1,5 @@
 ﻿using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
-using ContosoUniversity.ViewModels;
 using ContosoUniversity.ViewModels.Instructors;
 using System;
 using System.Collections.Generic;
@@ -107,28 +106,45 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "LastName,FirstMidName,HireDate,OfficeAssignment")] Instructor instructor, string[] selectedCourses)
+        public ActionResult Create(InstructorCreateForm form)
         {
-            if (selectedCourses != null)
+            var coursesAssigned = new List<Course> { };
+
+            if (form.SelectedCourses != null)
             {
-                instructor.Courses = new List<Course>();
-                foreach (var course in selectedCourses)
-                {
-                    var courseToAdd = UoW.Courses.GetById(int.Parse(course));
-                    instructor.Courses.Add(courseToAdd);
-                }
+                coursesAssigned = UoW.Courses.GetAll()
+                                     .Where(c => form.SelectedCourses.Contains(c.Id))
+                                     .ToList();
             }
 
+            OfficeAssignment office = null;
+
+            if (!string.IsNullOrWhiteSpace(form.OfficeAssignmentLocation))
+            {
+                office = new OfficeAssignment
+                {
+                    Location = form.OfficeAssignmentLocation
+                };
+            }
+            
             if (ModelState.IsValid)
             {
-                UoW.Instructors.Add(instructor);
+                UoW.Instructors.Add(new Instructor
+                {
+                    LastName = form.LastName,
+                    FirstMidName = form.FirstMidName,
+                    HireDate = form.HireDate,
+                    Courses = coursesAssigned,
+                    OfficeAssignment = office
+                });
                 UoW.Commit();
+
                 return RedirectToAction("Index");
             }
 
-            PopulateAssignedCourseData(instructor);
+            form.AssignedCourses = GetCoursesCheckList();
 
-            return View(instructor);
+            return View(form);
         }
 
         // GET: Instructor/Edit/5
@@ -274,6 +290,11 @@ namespace ContosoUniversity.Controllers
         {
             var instructor = UoW.Instructors.GetByIdWithOffice(id);
 
+            if (instructor.OfficeAssignment != null)
+            {
+                UoW.OfficeAssignments.Delete(instructor.OfficeAssignment);
+            }
+            
             UoW.Instructors.Delete(instructor);
 
             var department = UoW.Departments.GetAll()

@@ -15,6 +15,7 @@ namespace ContosoUniversity.Config
                 cfg.CreateMap<Course, CourseEditForm>();
                 cfg.CreateMap<Student, StudentEditForm>();
                 cfg.CreateMap<Instructor, InstructorEditForm>();
+                cfg.CreateMap<Instructor, InstructorDetailsViewModel>();
             });
         }
     }

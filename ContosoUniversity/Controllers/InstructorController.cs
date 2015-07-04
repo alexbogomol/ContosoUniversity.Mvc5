@@ -22,7 +22,7 @@ namespace ContosoUniversity.Controllers
         // GET: Instructor
         public ActionResult Index(int? instructorId, int? courseId)
         {
-            var viewModel = new InstructorIndexData
+            var viewModel = new InstructorsListViewModel
             {
                 Instructors = UoW.Instructors.GetAll().OrderBy(i => i.LastName)
             };
@@ -67,7 +67,9 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            return View(instructor);
+            var viewmodel = Mapper.Map<InstructorDetailsViewModel>(instructor);
+
+            return View(viewmodel);
         }
 
         // GET: Instructor/Create
@@ -270,7 +272,9 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            return View(instructor);
+            var viewmodel = Mapper.Map<InstructorDetailsViewModel>(instructor);
+
+            return View(viewmodel);
         }
 
         // POST: Instructor/Delete/5

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ContosoUniversity.ViewModels.Instructors
 {
-    public class InstructorIndexData
+    public class InstructorsListViewModel
     {
         public IEnumerable<Instructor> Instructors { get; set; }
         public IEnumerable<Course> Courses { get; set; }

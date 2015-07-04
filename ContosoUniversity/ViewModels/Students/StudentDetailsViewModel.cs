@@ -21,6 +21,7 @@ namespace ContosoUniversity.ViewModels.Students
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime EnrollmentDate { get; set; }
 
+        [Display(Name = "Enrolled for")]
         public IEnumerable<EnrollmentViewModel> Enrollments { get; set; }
     }
 }

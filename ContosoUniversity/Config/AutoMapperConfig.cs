@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels.Courses;
+using ContosoUniversity.ViewModels.Enrollments;
 using ContosoUniversity.ViewModels.Instructors;
 using ContosoUniversity.ViewModels.Students;
 
@@ -15,7 +16,10 @@ namespace ContosoUniversity.Config
                 cfg.CreateMap<Course, CourseEditForm>();
                 cfg.CreateMap<Course, CourseDetailsViewModel>();
 
+                cfg.CreateMap<Enrollment, EnrollmentViewModel>();
+
                 cfg.CreateMap<Student, StudentEditForm>();
+                cfg.CreateMap<Student, StudentDetailsViewModel>();
                 
                 cfg.CreateMap<Instructor, InstructorEditForm>();
                 cfg.CreateMap<Instructor, InstructorDetailsViewModel>();

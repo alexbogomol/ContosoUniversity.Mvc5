@@ -1,4 +1,4 @@
-﻿@model ContosoUniversity.Models.Student
+﻿@model ContosoUniversity.ViewModels.Students.StudentDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -40,14 +40,15 @@
         <dd>
             <table class="table table-bordered">
                 <tr>
-                    <th>Course Title</th>
-                    <th>Grade</th>
+                    @{ var enroll = Model.Enrollments.FirstOrDefault(); }
+                    <th>@Html.DisplayNameFor(model => enroll.CourseTitle)</th>
+                    <th>@Html.DisplayNameFor(model => enroll.Grade)</th>
                 </tr>
                 @foreach (var item in Model.Enrollments)
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Course.Title)
+                            @Html.DisplayFor(modelItem => item.CourseTitle)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Grade)

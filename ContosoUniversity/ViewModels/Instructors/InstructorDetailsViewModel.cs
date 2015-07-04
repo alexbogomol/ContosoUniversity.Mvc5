@@ -21,6 +21,7 @@ namespace ContosoUniversity.ViewModels.Instructors
 
         [StringLength(50)]
         [Display(Name = "Office Location")]
+        [DisplayFormat(NullDisplayText = "No office")]
         public string OfficeAssignmentLocation { get; set; }
     }
 }

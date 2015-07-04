@@ -12,7 +12,7 @@ namespace ContosoUniversity.DataAccess.Repositories
 
         public override Student GetById(int id)
         {
-            return DbSet.Include("Enrollments.Course")
+            return DbSet.Include(s => s.Enrollments.Select(e => e.Course))
                         .Where(std => std.Id == id)
                         .SingleOrDefault();
         }

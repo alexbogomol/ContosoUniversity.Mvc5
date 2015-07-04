@@ -82,7 +82,9 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            return View(student);
+            var viewmodel = Mapper.Map<StudentDetailsViewModel>(student);
+
+            return View(viewmodel);
         }
 
         // GET: Student/Create

@@ -13,7 +13,10 @@ namespace ContosoUniversity.Config
             Mapper.Initialize((cfg) =>
             {
                 cfg.CreateMap<Course, CourseEditForm>();
+                cfg.CreateMap<Course, CourseDetailsViewModel>();
+
                 cfg.CreateMap<Student, StudentEditForm>();
+                
                 cfg.CreateMap<Instructor, InstructorEditForm>();
                 cfg.CreateMap<Instructor, InstructorDetailsViewModel>();
             });

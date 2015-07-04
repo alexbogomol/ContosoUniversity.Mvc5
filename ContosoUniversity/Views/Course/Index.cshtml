@@ -1,4 +1,4 @@
-﻿@model ContosoUniversity.ViewModels.Courses.CourseIndexViewModel
+﻿@model ContosoUniversity.ViewModels.Courses.CoursesListViewModel
 
 @{
     ViewBag.Title = "Courses";
@@ -18,21 +18,24 @@
     </p>
 }
 
+@{ 
+    var course = Model.Courses.FirstOrDefault();
+}
+
 <table class="table">
     <tr>
         <th>
-            @*@Html.DisplayNameFor(model => model.Id)*@
-            Id
+            @Html.DisplayNameFor(model => course.Id)
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Title)*@
-            Title
+            @Html.DisplayNameFor(model => course.Title)
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Credits)*@
-            Credits
+            @Html.DisplayNameFor(model => course.Credits)
         </th>
-        <th>Department</th>
+        <th>
+            @Html.DisplayNameFor(model => course.DepartmentName)
+        </th>
         <th>Actions</th>
     </tr>
 
@@ -48,7 +51,7 @@
             @Html.DisplayFor(modelItem => item.Credits)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Department.Name)
+            @Html.DisplayFor(modelItem => item.DepartmentName)
         </td>
         <td>
             @Html.ActionLink("Edit",    "Edit",    new { id = item.Id }) |

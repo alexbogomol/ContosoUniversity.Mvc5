@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels;
@@ -20,12 +21,14 @@ namespace ContosoUniversity.Controllers
         // GET: Course
         public ActionResult Index(int? departmentFilter)
         {
-            return View(new CourseIndexViewModel
+            return View(new CoursesListViewModel
             {
                 DepartmentSelectList = UoW.Departments.GetAll().ToSelectList(departmentFilter),
                 Courses = UoW.Courses
                              .GetByDepartment(departmentFilter)
                              .OrderBy(course => course.Id)
+                             .AsQueryable()
+                             .Project().To<CourseDetailsViewModel>()
             });
         }
 
@@ -44,7 +47,9 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            return View(course);
+            var viewmodel = Mapper.Map<CourseDetailsViewModel>(course);
+
+            return View(viewmodel);
         }
 
         // GET: Course/Create
@@ -124,9 +129,9 @@ namespace ContosoUniversity.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var courseToUpdate = UoW.Courses.GetById(form.Id);
+            var updatee = UoW.Courses.GetById(form.Id);
 
-            var updated = TryUpdateModel(courseToUpdate, "", new string[] 
+            var updated = TryUpdateModel(updatee, "", new string[] 
             {
                 "Title",
                 "Credits",
@@ -168,7 +173,9 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            return View(course);
+            var viewmodel = Mapper.Map<CourseDetailsViewModel>(course);
+
+            return View(viewmodel);
         }
 
         // POST: Course/Delete/5

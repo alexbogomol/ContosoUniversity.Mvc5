@@ -1,4 +1,4 @@
-﻿@model ContosoUniversity.Models.Course
+﻿@model ContosoUniversity.ViewModels.Courses.CourseDetailsViewModel
 
 @{
     ViewBag.Title = "Delete";
@@ -12,11 +12,19 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Department.Name)
+            @Html.DisplayNameFor(model => model.DepartmentName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Department.Name)
+            @Html.DisplayFor(model => model.DepartmentName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
         </dd>
 
         <dt>

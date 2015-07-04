@@ -10,6 +10,13 @@ namespace ContosoUniversity.DataAccess.Repositories
     {
         public CoursesRepository(DbContext context) : base(context) { }
 
+        public override Course GetById(int id)
+        {
+            return DbSet.Include(c => c.Department)
+                        .Where(c => c.Id == id)
+                        .Single();
+        }
+
         public IEnumerable<Course> GetByDepartment(int? departmentId)
         {
             int id = departmentId.GetValueOrDefault();

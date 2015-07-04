@@ -2,7 +2,6 @@
 using ContosoUniversity.Models;
 using System.Data.Entity;
 using System.Linq;
-using System;
 
 namespace ContosoUniversity.DataAccess.Repositories
 {

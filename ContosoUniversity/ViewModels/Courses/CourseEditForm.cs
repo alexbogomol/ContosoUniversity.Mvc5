@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ContosoUniversity.Infrastructure.Mapping;
+using ContosoUniversity.Models;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace ContosoUniversity.ViewModels.Courses
 {
-    public class CourseEditForm
+    public class CourseEditForm : IMapFrom<Course>
     {
         [Display(Name = "Number")]
         public int Id { get; set; }

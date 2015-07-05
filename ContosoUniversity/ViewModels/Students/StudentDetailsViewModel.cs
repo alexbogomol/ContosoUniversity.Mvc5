@@ -1,4 +1,6 @@
-﻿using ContosoUniversity.ViewModels.Enrollments;
+﻿using ContosoUniversity.Infrastructure.Mapping;
+using ContosoUniversity.Models;
+using ContosoUniversity.ViewModels.Enrollments;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +8,7 @@ using System.Web.Mvc;
 
 namespace ContosoUniversity.ViewModels.Students
 {
-    public class StudentDetailsViewModel
+    public class StudentDetailsViewModel : IMapFrom<Student>
     {
         [HiddenInput]
         public int Id { get; set; }

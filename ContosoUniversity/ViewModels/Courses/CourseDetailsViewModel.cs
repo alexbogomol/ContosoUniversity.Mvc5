@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ContosoUniversity.Infrastructure.Mapping;
+using ContosoUniversity.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ContosoUniversity.ViewModels.Courses
 {
-    public class CourseDetailsViewModel
+    public class CourseDetailsViewModel : IMapFrom<Course>
     {
         [Display(Name = "Number")]
         public int Id { get; set; }

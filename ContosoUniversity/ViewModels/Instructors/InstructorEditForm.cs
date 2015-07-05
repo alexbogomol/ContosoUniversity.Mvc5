@@ -1,11 +1,13 @@
-﻿using System;
+﻿using ContosoUniversity.Infrastructure.Mapping;
+using ContosoUniversity.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace ContosoUniversity.ViewModels.Instructors
 {
-    public class InstructorEditForm
+    public class InstructorEditForm : IMapFrom<Instructor>
     {
         [HiddenInput]
         public int Id { get; set; }

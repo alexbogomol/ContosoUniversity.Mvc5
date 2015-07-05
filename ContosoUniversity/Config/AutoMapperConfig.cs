@@ -1,28 +1,62 @@
 ﻿using AutoMapper;
-using ContosoUniversity.Models;
-using ContosoUniversity.ViewModels.Courses;
-using ContosoUniversity.ViewModels.Enrollments;
-using ContosoUniversity.ViewModels.Instructors;
-using ContosoUniversity.ViewModels.Students;
+using ContosoUniversity.Infrastructure.Mapping;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace ContosoUniversity.Config
 {
+    /// <summary>
+    /// Find and load all mappings, noted with 'IMapFrom<T>' and 'IHaveCustomMappings'
+    /// </summary>
+    /// <remarks>
+    /// Taken from 'Fail-Tracker' by Matt Honeycutt:
+    /// https://github.com/MattHoneycutt/Fail-Tracker
+    /// </remarks>
     public class AutoMapperConfig
     {
         public static void Init()
         {
-            Mapper.Initialize((cfg) =>
+            var types = Assembly.GetExecutingAssembly().GetExportedTypes();
+
+            LoadStandardMappings(types);
+
+            LoadCustomMappings(types);
+        }
+
+        private static void LoadStandardMappings(IEnumerable<Type> types)
+        {
+            var maps = from t in types
+                       from i in t.GetInterfaces()
+                       where i.IsGenericType 
+                          && i.GetGenericTypeDefinition() == typeof(IMapFrom<>) 
+                          && !t.IsAbstract 
+                          && !t.IsInterface
+                       select new
+                       {
+                           Source = i.GetGenericArguments()[0],
+                           Destination = t
+                       };
+
+            maps.ToList().ForEach((map) =>
             {
-                cfg.CreateMap<Course, CourseEditForm>();
-                cfg.CreateMap<Course, CourseDetailsViewModel>();
+                Mapper.CreateMap(map.Source, map.Destination);
+            });
+        }
 
-                cfg.CreateMap<Enrollment, EnrollmentViewModel>();
+        private static void LoadCustomMappings(IEnumerable<Type> types)
+        {
+            var maps = from t in types
+                       from i in t.GetInterfaces()
+                       where typeof(IHaveCustomMappings).IsAssignableFrom(t) 
+                          && !t.IsAbstract 
+                          && !t.IsInterface
+                       select (IHaveCustomMappings)Activator.CreateInstance(t);
 
-                cfg.CreateMap<Student, StudentEditForm>();
-                cfg.CreateMap<Student, StudentDetailsViewModel>();
-                
-                cfg.CreateMap<Instructor, InstructorEditForm>();
-                cfg.CreateMap<Instructor, InstructorDetailsViewModel>();
+            maps.ToList().ForEach((map) => 
+            {
+                map.CreateMappings(Mapper.Configuration);
             });
         }
     }

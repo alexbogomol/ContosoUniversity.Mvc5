@@ -1,10 +1,12 @@
-﻿using System;
+﻿using ContosoUniversity.Infrastructure.Mapping;
+using ContosoUniversity.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace ContosoUniversity.ViewModels.Instructors
 {
-    public class InstructorDetailsViewModel
+    public class InstructorDetailsViewModel : IMapFrom<Instructor>
     {
         [HiddenInput]
         public int Id { get; set; }

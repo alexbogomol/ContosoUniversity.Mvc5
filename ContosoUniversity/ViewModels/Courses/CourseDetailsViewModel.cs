@@ -15,5 +15,10 @@ namespace ContosoUniversity.ViewModels.Courses
 
         [Display(Name = "Department")]
         public string DepartmentName { get; set; }
+
+        public string TitleWithId
+        {
+            get { return string.Format("{0} {1}", Id, Title); }
+        }
     }
 }

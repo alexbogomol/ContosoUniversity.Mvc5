@@ -5,18 +5,19 @@
     string selectedRow = "";
 }
 
-<h2>Instructors</h2>
+<h2>@Html.DisplayNameFor(model => Model.Instructors)</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
-        <th>Last Name</th>
-        <th>First Name</th>
-        <th>Hire Date</th>
-        <th>Office</th>
-        <th>Courses</th>
+        @{ var instrheader = Model.Instructors.First(); }
+        <th>@Html.DisplayNameFor(model => instrheader.FirstMidName)</th>
+        <th>@Html.DisplayNameFor(model => instrheader.LastName)</th>
+        <th>@Html.DisplayNameFor(model => instrheader.HireDate)</th>
+        <th>@Html.DisplayNameFor(model => instrheader.OfficeAssignmentLocation)</th>
+        <th>@Html.DisplayNameFor(model => instrheader.Courses)</th>
         <th>Actions</th>
     </tr>
 
@@ -24,27 +25,14 @@
 {
     selectedRow = (instructor.Id == Model.InstructorId) ? "success" : "";
     <tr class="@selectedRow">
+        <td>@Html.DisplayFor(model => instructor.LastName)</td>
+        <td>@Html.DisplayFor(model => instructor.FirstMidName)</td>
+        <td>@Html.DisplayFor(model => instructor.HireDate)</td>
+        <td>@Html.DisplayFor(model => instructor.OfficeAssignmentLocation)</td>
         <td>
-            @Html.DisplayFor(model => instructor.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(model => instructor.FirstMidName)
-        </td>
-        <td>
-            @Html.DisplayFor(model => instructor.HireDate)
-        </td>
-        <td>
-            @if (instructor.OfficeAssignment != null)
+            @foreach (var course in instructor.Courses)
             {
-                @instructor.OfficeAssignment.Location
-            }
-        </td>
-        <td>
-            @{
-                foreach (var course in instructor.Courses)
-                {
-                    @course.Id @:  @course.Title <br />
-                }
+                @course.TitleWithId <br />
             }
         </td>
         <td>
@@ -60,13 +48,14 @@
 
 @if (Model.Courses != null)
 {
-    <h3>Courses Taught by Selected Instructor</h3>
+    <h3>@Html.DisplayNameFor(model => Model.Courses)</h3>
     <table class="table">
         <tr>
+            @{ var crsheader = Model.Courses.First(); }
             <th></th>
-            <th>Number</th>
-            <th>Title</th>
-            <th>Department</th>
+            <th>@Html.DisplayNameFor(model => crsheader.Id)</th>
+            <th>@Html.DisplayNameFor(model => crsheader.Title)</th>
+            <th>@Html.DisplayNameFor(model => crsheader.DepartmentName)</th>
         </tr>
 
         @foreach (var course in Model.Courses)
@@ -76,15 +65,9 @@
                 <td>
                     @Html.ActionLink("Select", "Index", new { courseId = course.Id })
                 </td>
-                <td>
-                    @course.Id
-                </td>
-                <td>
-                    @course.Title
-                </td>
-                <td>
-                    @course.Department.Name
-                </td>
+                <td>@Html.DisplayFor(model => course.Id)</td>
+                <td>@Html.DisplayFor(model => course.Title)</td>
+                <td>@Html.DisplayFor(model => course.DepartmentName)</td>
             </tr>
         }
 
@@ -93,23 +76,18 @@
 
 @if (Model.Enrollments != null)
 {
-    <h3>
-        Students Enrolled in Selected Course
-    </h3>
+    <h3>@Html.DisplayNameFor(model => Model.Enrollments)</h3>
     <table class="table">
         <tr>
-            <th>Name</th>
-            <th>Grade</th>
+            @{ var enrheader = Model.Enrollments.First(); }
+            <th>@Html.DisplayNameFor(model => enrheader.StudentFullName)</th>
+            <th>@Html.DisplayNameFor(model => enrheader.Grade)</th>
         </tr>
         @foreach (var enrollment in Model.Enrollments)
         {
             <tr>
-                <td>
-                    @enrollment.Student.FullName
-                </td>
-                <td>
-                    @Html.DisplayFor(model => enrollment.Grade)
-                </td>
+                <td>@Html.DisplayFor(model => enrollment.StudentFullName)</td>
+                <td>@Html.DisplayFor(model => enrollment.Grade)</td>
             </tr>
         }
     </table>

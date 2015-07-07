@@ -173,6 +173,7 @@
     <Compile Include="ViewModels\Courses\CourseEditForm.cs" />
     <Compile Include="ViewModels\Courses\CourseCreateForm.cs" />
     <Compile Include="ViewModels\Courses\CoursesListViewModel.cs" />
+    <Compile Include="ViewModels\Instructors\InstructorsListItemViewModel.cs" />
     <Compile Include="ViewModels\Instructors\InstructorDetailsViewModel.cs" />
     <Compile Include="ViewModels\Instructors\InstructorEditForm.cs" />
     <Compile Include="ViewModels\Instructors\InstructorCreateForm.cs" />

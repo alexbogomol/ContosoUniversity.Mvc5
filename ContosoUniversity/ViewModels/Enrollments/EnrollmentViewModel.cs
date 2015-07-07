@@ -10,6 +10,10 @@ namespace ContosoUniversity.ViewModels.Enrollments
         public string CourseTitle { get; set; }
 
         [Display(Name = "Enrolled Grade")]
+        [DisplayFormat(NullDisplayText = "No grade")]
         public string Grade { get; set; }
+
+        [Display(Name = "Enrolled Student")]
+        public string StudentFullName { get; set; }
     }
 }

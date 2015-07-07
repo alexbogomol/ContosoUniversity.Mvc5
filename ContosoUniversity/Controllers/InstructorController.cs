@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
+using ContosoUniversity.ViewModels.Courses;
+using ContosoUniversity.ViewModels.Enrollments;
 using ContosoUniversity.ViewModels.Instructors;
 using System;
 using System.Collections.Generic;
@@ -25,6 +28,7 @@ namespace ContosoUniversity.Controllers
             var viewModel = new InstructorsListViewModel
             {
                 Instructors = UoW.Instructors.GetAll().OrderBy(i => i.LastName)
+                                 .Project().To<InstructorsListItemViewModel>()
             };
 
             // instructor was not selected -> no courses to show
@@ -35,7 +39,9 @@ namespace ContosoUniversity.Controllers
 
             viewModel.InstructorId = instructorId.Value;
 
-            viewModel.Courses = UoW.Instructors.GetById(instructorId.Value).Courses;
+            viewModel.Courses = UoW.Instructors.GetById(instructorId.Value)
+                                   .Courses.AsQueryable()
+                                   .Project().To<CourseDetailsViewModel>();
 
             // course was not selected -> no students to show
             if (courseId == null)
@@ -47,7 +53,9 @@ namespace ContosoUniversity.Controllers
 
             viewModel.Enrollments = UoW.Enrollments.GetAll()
                                        .Include(e => e.Student)
-                                       .Where(e => e.CourseId == courseId.Value);
+                                       .Where(e => e.CourseId == courseId.Value)
+                                       .ToList().AsQueryable()
+                                       .Project().To<EnrollmentViewModel>();
 
             return View(viewModel);
         }

@@ -7,7 +7,6 @@ using ContosoUniversity.ViewModels.Enrollments;
 using ContosoUniversity.ViewModels.Instructors;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -51,10 +50,8 @@ namespace ContosoUniversity.Controllers
 
             viewModel.CourseId = courseId.Value;
 
-            viewModel.Enrollments = UoW.Enrollments.GetAll()
-                                       .Include(e => e.Student)
-                                       .Where(e => e.CourseId == courseId.Value)
-                                       .ToList().AsQueryable()
+            viewModel.Enrollments = UoW.Enrollments.GetByCourse(courseId)
+                                       .AsQueryable()
                                        .Project().To<EnrollmentViewModel>();
 
             return View(viewModel);

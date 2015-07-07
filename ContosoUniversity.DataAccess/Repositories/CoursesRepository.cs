@@ -32,5 +32,13 @@ namespace ContosoUniversity.DataAccess.Repositories
                 "UPDATE Course SET Credits = Credits * {0}",
                 multiplier);
         }
+
+        public IEnumerable<Course> GetByInstructor(int? instructorId)
+        {
+            return DbSet.Include(c => c.Instructors)
+                        .Include(c => c.Department)
+                        .Where(c => c.Instructors.Select(i => i.Id).Contains(instructorId.Value))
+                        .ToList();
+        }
     }
 }

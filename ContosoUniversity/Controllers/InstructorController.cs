@@ -39,8 +39,8 @@ namespace ContosoUniversity.Controllers
 
             viewModel.InstructorId = instructorId.Value;
 
-            viewModel.Courses = UoW.Instructors.GetById(instructorId.Value)
-                                   .Courses.AsQueryable()
+            viewModel.Courses = UoW.Courses.GetByInstructor(instructorId)
+                                   .AsQueryable()
                                    .Project().To<CourseDetailsViewModel>();
 
             // course was not selected -> no students to show

@@ -7,5 +7,6 @@ namespace ContosoUniversity.DataAccess.Contracts
     {
         int UpdateCourseCredits(int multiplier);
         IEnumerable<Course> GetByDepartment(int? departmentId);
+        IEnumerable<Course> GetByInstructor(int? instructorId);
     }
 }

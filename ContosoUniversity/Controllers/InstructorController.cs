@@ -26,8 +26,13 @@ namespace ContosoUniversity.Controllers
         {
             var viewModel = new InstructorsListViewModel
             {
-                Instructors = UoW.Instructors.GetAll().OrderBy(i => i.LastName)
-                                 .Project().To<InstructorsListItemViewModel>()
+                InstructorsWidget = new InstructorsWidget
+                {
+                    Instructors = UoW.Instructors.GetAll().OrderBy(i => i.LastName)
+                                     .Project().To<InstructorsListItemViewModel>(),
+
+                    InstructorId = instructorId ?? default(int)
+                }
             };
 
             // instructor was not selected -> no courses to show
@@ -36,11 +41,14 @@ namespace ContosoUniversity.Controllers
                 return View(viewModel);
             }
 
-            viewModel.InstructorId = instructorId.Value;
+            viewModel.CoursesWidget = new CoursesWidget
+            {
+                Courses = UoW.Courses.GetByInstructor(instructorId)
+                             .AsQueryable()
+                             .Project().To<CourseDetailsViewModel>(),
 
-            viewModel.Courses = UoW.Courses.GetByInstructor(instructorId)
-                                   .AsQueryable()
-                                   .Project().To<CourseDetailsViewModel>();
+                CourseId = courseId ?? default(int)
+            };
 
             // course was not selected -> no students to show
             if (courseId == null)
@@ -48,11 +56,12 @@ namespace ContosoUniversity.Controllers
                 return View(viewModel);
             }
 
-            viewModel.CourseId = courseId.Value;
-
-            viewModel.Enrollments = UoW.Enrollments.GetByCourse(courseId)
-                                       .AsQueryable()
-                                       .Project().To<EnrollmentViewModel>();
+            viewModel.EnrollmentsWidget = new EnrollmentsWidget
+            {
+                Enrollments = UoW.Enrollments.GetByCourse(courseId)
+                                 .AsQueryable()
+                                 .Project().To<EnrollmentViewModel>()
+            };
 
             return View(viewModel);
         }

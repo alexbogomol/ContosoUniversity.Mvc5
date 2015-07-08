@@ -2,93 +2,25 @@
 
 @{
     ViewBag.Title = "Instructors";
-    string selectedRow = "";
 }
 
-<h2>@Html.DisplayNameFor(model => Model.Instructors)</h2>
-
+<h2>@Html.DisplayNameFor(model => Model.InstructorsWidget)</h2>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        @{ var instrheader = Model.Instructors.First(); }
-        <th>@Html.DisplayNameFor(model => instrheader.FirstMidName)</th>
-        <th>@Html.DisplayNameFor(model => instrheader.LastName)</th>
-        <th>@Html.DisplayNameFor(model => instrheader.HireDate)</th>
-        <th>@Html.DisplayNameFor(model => instrheader.OfficeAssignmentLocation)</th>
-        <th>@Html.DisplayNameFor(model => instrheader.Courses)</th>
-        <th>Actions</th>
-    </tr>
-
-@foreach (var instructor in Model.Instructors)
+@if (Model.InstructorsWidget != null)
 {
-    selectedRow = (instructor.Id == Model.InstructorId) ? "success" : "";
-    <tr class="@selectedRow">
-        <td>@Html.DisplayFor(model => instructor.LastName)</td>
-        <td>@Html.DisplayFor(model => instructor.FirstMidName)</td>
-        <td>@Html.DisplayFor(model => instructor.HireDate)</td>
-        <td>@Html.DisplayFor(model => instructor.OfficeAssignmentLocation)</td>
-        <td>
-            @foreach (var course in instructor.Courses)
-            {
-                @course.TitleWithId <br />
-            }
-        </td>
-        <td>
-            @Html.ActionLink("Select",  "Index",   new { instructorId = instructor.Id }) |
-            @Html.ActionLink("Edit",    "Edit",    new { id = instructor.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = instructor.Id }) |
-            @Html.ActionLink("Delete",  "Delete",  new { id = instructor.Id })
-        </td>
-    </tr>
+    @Html.Partial("Partials/InstructorsWidget", Model.InstructorsWidget)
 }
 
-</table>
-
-@if (Model.Courses != null)
+@if (Model.CoursesWidget != null)
 {
-    <h3>@Html.DisplayNameFor(model => Model.Courses)</h3>
-    <table class="table">
-        <tr>
-            @{ var crsheader = Model.Courses.First(); }
-            <th></th>
-            <th>@Html.DisplayNameFor(model => crsheader.Id)</th>
-            <th>@Html.DisplayNameFor(model => crsheader.Title)</th>
-            <th>@Html.DisplayNameFor(model => crsheader.DepartmentName)</th>
-        </tr>
-
-        @foreach (var course in Model.Courses)
-        {
-            selectedRow = (course.Id == Model.CourseId) ? "success" : "";
-            <tr class="@selectedRow">
-                <td>
-                    @Html.ActionLink("Select", "Index", new { courseId = course.Id })
-                </td>
-                <td>@Html.DisplayFor(model => course.Id)</td>
-                <td>@Html.DisplayFor(model => course.Title)</td>
-                <td>@Html.DisplayFor(model => course.DepartmentName)</td>
-            </tr>
-        }
-
-    </table>
+    <h3>@Html.DisplayNameFor(model => Model.CoursesWidget)</h3>
+    @Html.Partial("Partials/CoursesWidget", Model.CoursesWidget)
 }
 
-@if (Model.Enrollments != null)
+@if (Model.EnrollmentsWidget != null)
 {
-    <h3>@Html.DisplayNameFor(model => Model.Enrollments)</h3>
-    <table class="table">
-        <tr>
-            @{ var enrheader = Model.Enrollments.First(); }
-            <th>@Html.DisplayNameFor(model => enrheader.StudentFullName)</th>
-            <th>@Html.DisplayNameFor(model => enrheader.Grade)</th>
-        </tr>
-        @foreach (var enrollment in Model.Enrollments)
-        {
-            <tr>
-                <td>@Html.DisplayFor(model => enrollment.StudentFullName)</td>
-                <td>@Html.DisplayFor(model => enrollment.Grade)</td>
-            </tr>
-        }
-    </table>
+    <h3>@Html.DisplayNameFor(model => Model.EnrollmentsWidget)</h3>
+    @Html.Partial("Partials/EnrollmentsWidget", Model.EnrollmentsWidget)
 }

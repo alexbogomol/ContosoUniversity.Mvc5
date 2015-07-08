@@ -1,0 +1,16 @@
+﻿@model ContosoUniversity.ViewModels.Instructors.EnrollmentsWidget
+
+<table class="table">
+    <tr>
+        @{ var header = Model.Enrollments.First(); }
+        <th>@Html.DisplayNameFor(model => header.StudentFullName)</th>
+        <th>@Html.DisplayNameFor(model => header.Grade)</th>
+    </tr>
+    @foreach (var enrollment in Model.Enrollments)
+    {
+        <tr>
+            <td>@Html.DisplayFor(model => enrollment.StudentFullName)</td>
+            <td>@Html.DisplayFor(model => enrollment.Grade)</td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,36 @@
+﻿@model ContosoUniversity.ViewModels.Instructors.InstructorsWidget
+
+<table class="table">
+    <tr>
+        @{ var header = Model.Instructors.First(); }
+        <th>@Html.DisplayNameFor(model => header.FirstMidName)</th>
+        <th>@Html.DisplayNameFor(model => header.LastName)</th>
+        <th>@Html.DisplayNameFor(model => header.HireDate)</th>
+        <th>@Html.DisplayNameFor(model => header.OfficeAssignmentLocation)</th>
+        <th>@Html.DisplayNameFor(model => header.Courses)</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var instructor in Model.Instructors)
+    {
+        var selectedRow = (instructor.Id == Model.InstructorId) ? "success" : "";
+        <tr class="@selectedRow">
+            <td>@Html.DisplayFor(model => instructor.LastName)</td>
+            <td>@Html.DisplayFor(model => instructor.FirstMidName)</td>
+            <td>@Html.DisplayFor(model => instructor.HireDate)</td>
+            <td>@Html.DisplayFor(model => instructor.OfficeAssignmentLocation)</td>
+            <td>
+                @foreach (var course in instructor.Courses)
+                {
+                    @course.TitleWithId <br />
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Select",  "Index",   new { instructorId = instructor.Id }) |
+                @Html.ActionLink("Edit",    "Edit",    new { id = instructor.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = instructor.Id }) |
+                @Html.ActionLink("Delete",  "Delete",  new { id = instructor.Id })
+            </td>
+        </tr>
+    }
+</table>

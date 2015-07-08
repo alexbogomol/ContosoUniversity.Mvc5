@@ -8,15 +8,29 @@ namespace ContosoUniversity.ViewModels.Instructors
     public class InstructorsListViewModel
     {
         [Display(Name = "Instructors available:")]
-        public IEnumerable<InstructorsListItemViewModel> Instructors { get; set; }
+        public InstructorsWidget InstructorsWidget { get; set; }
 
         [Display(Name = "Courses, taught by selected instructor:")]
-        public IEnumerable<CourseDetailsViewModel> Courses { get; set; }
+        public CoursesWidget CoursesWidget { get; set; }
 
         [Display(Name = "Students, enrolled in selected course:")]
-        public IEnumerable<EnrollmentViewModel> Enrollments { get; set; }
+        public EnrollmentsWidget EnrollmentsWidget { get; set; }
+    }
 
+    public class InstructorsWidget
+    {
+        public IEnumerable<InstructorsListItemViewModel> Instructors { get; set; }
         public int InstructorId { get; set; }
+    }
+
+    public class CoursesWidget
+    {
+        public IEnumerable<CourseDetailsViewModel> Courses { get; set; }
         public int CourseId { get; set; }
+    }
+
+    public class EnrollmentsWidget
+    {
+        public IEnumerable<EnrollmentViewModel> Enrollments { get; set; }
     }
 }

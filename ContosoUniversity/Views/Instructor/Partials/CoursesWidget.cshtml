@@ -1,0 +1,25 @@
+﻿@model ContosoUniversity.ViewModels.Instructors.CoursesWidget
+
+<table class="table">
+    <tr>
+        @{ var header = Model.Courses.First(); }
+        <th></th>
+        <th>@Html.DisplayNameFor(model => header.Id)</th>
+        <th>@Html.DisplayNameFor(model => header.Title)</th>
+        <th>@Html.DisplayNameFor(model => header.DepartmentName)</th>
+    </tr>
+
+    @foreach (var course in Model.Courses)
+    {
+        var selectedRow = (course.Id == Model.CourseId) ? "success" : "";
+        <tr class="@selectedRow">
+            <td>
+                @Html.ActionLink("Select", "Index", new { courseId = course.Id })
+            </td>
+            <td>@Html.DisplayFor(model => course.Id)</td>
+            <td>@Html.DisplayFor(model => course.Title)</td>
+            <td>@Html.DisplayFor(model => course.DepartmentName)</td>
+        </tr>
+    }
+
+</table>

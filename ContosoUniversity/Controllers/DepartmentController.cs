@@ -1,4 +1,5 @@
 ﻿using ContosoUniversity.DataAccess;
+using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
 using System.Data;
 using System.Data.Entity;
@@ -10,15 +11,21 @@ using System.Web.Mvc;
 
 namespace ContosoUniversity.Controllers
 {
-    public class DepartmentController : Controller
+    public class DepartmentController : BaseController
     {
         private SchoolContext db = new SchoolContext();
+
+        public DepartmentController(ISchoolUow uow)
+        {
+            UoW = uow;
+        }
 
         // GET: Department
         public async Task<ActionResult> Index()
         {
-            var departments = db.Departments.Include(d => d.Administrator);
-            return View(await departments.ToListAsync());
+            var departments = await UoW.Departments.GetAllAsync();
+
+            return View(departments);
         }
 
         // GET: Department/Details/5
@@ -28,14 +35,9 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            // Commenting out original code to show how to use a raw SQL query.
-            //Department department = await db.Departments.FindAsync(id);
-
-            // Create and execute raw SQL query.
-            string query = "SELECT * FROM Department WHERE Id = @p0";
-            Department department = await db.Departments.SqlQuery(query, id).SingleOrDefaultAsync();
-
+            
+            var department = await UoW.Departments.GetByIdAsync(id.Value);
+            
             if (department == null)
             {
                 return HttpNotFound();

@@ -2,6 +2,7 @@
 using ContosoUniversity.Models;
 using System;
 using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.DataAccess
 {
@@ -9,7 +10,7 @@ namespace ContosoUniversity.DataAccess
     {
         private readonly DbContext _dbContext;
         private readonly ICoursesRepository _courses;
-        private readonly IRepository<Department> _departments;
+        private readonly IAsyncRepository<Department> _departments;
         private readonly IStudentsRepository _students;
         private readonly IInstructorsRepository _instructors;
         private readonly IEnrollmentsRepository _enrollments;
@@ -17,7 +18,7 @@ namespace ContosoUniversity.DataAccess
 
         public SchoolUow(DbContext context,
                          ICoursesRepository courses,
-                         IRepository<Department> departments,
+                         IAsyncRepository<Department> departments,
                          IStudentsRepository students,
                          IInstructorsRepository instructors,
                          IEnrollmentsRepository enrollments,
@@ -40,7 +41,7 @@ namespace ContosoUniversity.DataAccess
             get { return _courses; }
         }
 
-        public IRepository<Department> Departments
+        public IAsyncRepository<Department> Departments
         {
             get { return _departments; }
         }
@@ -78,6 +79,11 @@ namespace ContosoUniversity.DataAccess
             _dbContext.SaveChanges();
         }
 
+        public async Task CommitAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+
         #region IDispossable
 
         public void Dispose()
@@ -95,6 +101,11 @@ namespace ContosoUniversity.DataAccess
                     _dbContext.Dispose();
                 }
             }
+        }
+
+        public Task CommitAsync()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

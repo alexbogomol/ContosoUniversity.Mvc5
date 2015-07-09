@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IAsyncRepository.cs" />
     <Compile Include="Contracts\IEnrollmentsRepository.cs" />
     <Compile Include="Contracts\ICoursesRepository.cs" />
     <Compile Include="Contracts\IInstructorsRepository.cs" />
@@ -56,6 +57,8 @@
     <Compile Include="Contracts\ISchoolUow.cs" />
     <Compile Include="Contracts\IStudentsRepository.cs" />
     <Compile Include="Repositories\CoursesRepository.cs" />
+    <Compile Include="Repositories\DepartmentsRepository.cs" />
+    <Compile Include="Repositories\EfAsyncRepository.cs" />
     <Compile Include="Repositories\EfRepository.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Logger.cs" />

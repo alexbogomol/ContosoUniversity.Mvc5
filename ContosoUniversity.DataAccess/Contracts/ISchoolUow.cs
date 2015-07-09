@@ -1,4 +1,5 @@
 ﻿using ContosoUniversity.Models;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.DataAccess.Contracts
 {
@@ -13,12 +14,13 @@ namespace ContosoUniversity.DataAccess.Contracts
     {
         // Save pending changes to the data store.
         void Commit();
+        Task CommitAsync();
 
         // Repositories available
         IStudentsRepository Students { get; }
         IEnrollmentsRepository Enrollments { get; }
         ICoursesRepository Courses { get; }
-        IRepository<Department> Departments { get; }
+        IAsyncRepository<Department> Departments { get; }
         IInstructorsRepository Instructors { get; }
         IRepository<OfficeAssignment> OfficeAssignments { get; }
         IRepository<Person> People { get; }

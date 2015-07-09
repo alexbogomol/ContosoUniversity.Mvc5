@@ -1,8 +1,6 @@
-﻿using ContosoUniversity.DataAccess;
-using ContosoUniversity.DataAccess.Contracts;
+﻿using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
 using System.Data;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -13,8 +11,6 @@ namespace ContosoUniversity.Controllers
 {
     public class DepartmentController : BaseController
     {
-        private SchoolContext db = new SchoolContext();
-
         public DepartmentController(ISchoolUow uow)
         {
             UoW = uow;
@@ -49,7 +45,8 @@ namespace ContosoUniversity.Controllers
         // GET: Department/Create
         public ActionResult Create()
         {
-            ViewBag.InstructorId = new SelectList(db.Instructors, "Id", "FullName");
+            ViewBag.InstructorId = new SelectList(UoW.Instructors.GetAll(), "Id", "FullName");
+
             return View();
         }
 
@@ -62,12 +59,13 @@ namespace ContosoUniversity.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Departments.Add(department);
-                await db.SaveChangesAsync();
+                UoW.Departments.Add(department);
+                await UoW.CommitAsync();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.InstructorId = new SelectList(db.Instructors, "Id", "FullName", department.InstructorId);
+            ViewBag.InstructorId = new SelectList(UoW.Instructors.GetAll(), "Id", "FullName", department.InstructorId);
+
             return View(department);
         }
 
@@ -78,12 +76,16 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = await db.Departments.FindAsync(id);
+
+            var department = await UoW.Departments.GetByIdAsync(id.Value);
+
             if (department == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.InstructorId = new SelectList(db.Instructors, "Id", "FullName", department.InstructorId);
+
+            ViewBag.InstructorId = new SelectList(UoW.Instructors.GetAll(), "Id", "FullName", department.InstructorId);
+
             return View(department);
         }
 
@@ -104,14 +106,15 @@ namespace ContosoUniversity.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var departmentToUpdate = await db.Departments.FindAsync(id);
+            //var departmentToUpdate = await db.Departments.FindAsync(id);
+            var departmentToUpdate = await UoW.Departments.GetByIdAsync(id.Value);
 
             if (departmentToUpdate == null)
             {
                 Department deletedDepartment = new Department();
                 TryUpdateModel(deletedDepartment, fieldsToBind);
                 ModelState.AddModelError(string.Empty, "Unable to save changes. The department was deleted by another user.");
-                ViewBag.InstructorID = new SelectList(db.Instructors, "Id", "FullName", deletedDepartment.Id);
+                ViewBag.InstructorID = new SelectList(UoW.Instructors.GetAll(), "Id", "FullName", deletedDepartment.Id);
                 return View(deletedDepartment);
             }
 
@@ -119,8 +122,10 @@ namespace ContosoUniversity.Controllers
             {
                 try
                 {
-                    db.Entry(departmentToUpdate).OriginalValues["RowVersion"] = rowVersion;
-                    await db.SaveChangesAsync();
+                    departmentToUpdate.RowVersion = rowVersion;
+                    await UoW.CommitAsync();
+                    //db.Entry(departmentToUpdate).OriginalValues["RowVersion"] = rowVersion;
+                    //await db.SaveChangesAsync();
 
                     return RedirectToAction("Index");
                 }
@@ -148,7 +153,7 @@ namespace ContosoUniversity.Controllers
                             ModelState.AddModelError("StartDate", "Current value: " + string.Format("{0:d}", databaseValues.StartDate));
 
                         if (databaseValues.InstructorId != clientValues.InstructorId)
-                            ModelState.AddModelError("InstructorId", "Current value: " + db.Instructors.Find(databaseValues.InstructorId).FullName);
+                            ModelState.AddModelError("InstructorId", "Current value: " + UoW.Instructors.GetById(databaseValues.InstructorId.Value).FullName);
 
                         ModelState.AddModelError(string.Empty, "The record you attempted to edit "
                             + "was modified by another user after you got the original value. The "
@@ -166,7 +171,7 @@ namespace ContosoUniversity.Controllers
                 }
             }
 
-            ViewBag.InstructorID = new SelectList(db.Instructors, "Id", "FullName", departmentToUpdate.InstructorId);
+            ViewBag.InstructorID = new SelectList(UoW.Instructors.GetAll(), "Id", "FullName", departmentToUpdate.InstructorId);
 
             return View(departmentToUpdate);
         }
@@ -179,7 +184,7 @@ namespace ContosoUniversity.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Department department = await db.Departments.FindAsync(id);
+            var department = await UoW.Departments.GetByIdAsync(id.Value);
 
             if (department == null)
             {
@@ -210,8 +215,8 @@ namespace ContosoUniversity.Controllers
         {
             try
             {
-                db.Entry(department).State = EntityState.Deleted;
-                await db.SaveChangesAsync();
+                UoW.Departments.Delete(department);
+                await UoW.CommitAsync();
                 return RedirectToAction("Index");
             }
             catch (DbUpdateConcurrencyException)

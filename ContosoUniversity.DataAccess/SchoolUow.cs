@@ -103,11 +103,6 @@ namespace ContosoUniversity.DataAccess
             }
         }
 
-        public Task CommitAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
     }
 }

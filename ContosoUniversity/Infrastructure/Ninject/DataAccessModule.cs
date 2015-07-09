@@ -1,7 +1,9 @@
 ﻿using ContosoUniversity.DataAccess;
 using ContosoUniversity.DataAccess.Contracts;
+using ContosoUniversity.DataAccess.Repositories;
 using Ninject.Modules;
 using Ninject.Web.Common;
+using System.Data.Entity;
 
 namespace ContosoUniversity.Infrastructure.Ninject
 {
@@ -9,6 +11,14 @@ namespace ContosoUniversity.Infrastructure.Ninject
     {
         public override void Load()
         {
+            Bind<DbContext>().To<SchoolContext>().InRequestScope();
+
+            Bind<ICoursesRepository>().To<CoursesRepository>().InRequestScope();
+            Bind<IStudentsRepository>().To<StudentsRepository>().InRequestScope();
+            Bind<IInstructorsRepository>().To<InstructorsRepository>().InRequestScope();
+            Bind<IEnrollmentsRepository>().To<EnrollmentsRepository>().InRequestScope();
+            Bind(typeof(IRepository<>)).To(typeof(EfRepository<>)).InRequestScope();
+
             Bind<ISchoolUow>().To<SchoolUow>().InRequestScope();
         }
     }

@@ -1,13 +1,13 @@
 ﻿using ContosoUniversity.DataAccess.Contracts;
-using ContosoUniversity.DataAccess.Repositories;
 using ContosoUniversity.Models;
 using System;
+using System.Data.Entity;
 
 namespace ContosoUniversity.DataAccess
 {
     public class SchoolUow : ISchoolUow, IDisposable
     {
-        private readonly SchoolContext _dbContext;
+        private readonly DbContext _dbContext;
         private readonly ICoursesRepository _courses;
         private readonly IRepository<Department> _departments;
         private readonly IStudentsRepository _students;
@@ -15,20 +15,24 @@ namespace ContosoUniversity.DataAccess
         private readonly IEnrollmentsRepository _enrollments;
         private readonly IRepository<OfficeAssignment> _offices;
 
-        public SchoolUow()
+        public SchoolUow(DbContext context,
+                         ICoursesRepository courses,
+                         IRepository<Department> departments,
+                         IStudentsRepository students,
+                         IInstructorsRepository instructors,
+                         IEnrollmentsRepository enrollments,
+                         IRepository<OfficeAssignment> offices)
         {
-            _dbContext = new SchoolContext();
-            _dbContext.Configuration.LazyLoadingEnabled = false;
-            //_dbContext.Configuration.ProxyCreationEnabled = false;
-            //_dbContext.Configuration.ValidateOnSaveEnabled = false;
+            _dbContext = context;
 
-            // TODO: we need a factory here (later)
-            _courses = new CoursesRepository(_dbContext);
-            _departments = new EfRepository<Department>(_dbContext);
-            _students = new StudentsRepository(_dbContext);
-            _instructors = new InstructorsRepository(_dbContext);
-            _enrollments = new EnrollmentsRepository(_dbContext);
-            _offices = new EfRepository<OfficeAssignment>(_dbContext);
+            _dbContext.Configuration.LazyLoadingEnabled = false;
+            
+            _courses = courses;
+            _departments = departments;
+            _students = students;
+            _instructors = instructors;
+            _enrollments = enrollments;
+            _offices = offices;
         }
 
         public ICoursesRepository Courses

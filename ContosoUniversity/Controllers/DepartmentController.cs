@@ -1,5 +1,6 @@
 ﻿using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
+using ContosoUniversity.ViewModels;
 using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -45,8 +46,9 @@ namespace ContosoUniversity.Controllers
         // GET: Department/Create
         public ActionResult Create()
         {
-            ViewBag.InstructorId = new SelectList(UoW.Instructors.GetAll(), "Id", "FullName");
-
+            ViewBag.InstructorId = UoW.Instructors.GetAll().ToSelectList(
+                textMember: "FullName"
+            );
             return View();
         }
 
@@ -64,7 +66,10 @@ namespace ContosoUniversity.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.InstructorId = new SelectList(UoW.Instructors.GetAll(), "Id", "FullName", department.InstructorId);
+            ViewBag.InstructorId = UoW.Instructors.GetAll().ToSelectList(
+                selectedId: department.InstructorId,
+                textMember: "FullName"
+            );
 
             return View(department);
         }
@@ -84,7 +89,10 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.InstructorId = new SelectList(UoW.Instructors.GetAll(), "Id", "FullName", department.InstructorId);
+            ViewBag.InstructorId = UoW.Instructors.GetAll().ToSelectList(
+                selectedId: department.InstructorId,
+                textMember: "FullName"
+            );
 
             return View(department);
         }
@@ -106,7 +114,6 @@ namespace ContosoUniversity.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            //var departmentToUpdate = await db.Departments.FindAsync(id);
             var departmentToUpdate = await UoW.Departments.GetByIdAsync(id.Value);
 
             if (departmentToUpdate == null)
@@ -114,7 +121,12 @@ namespace ContosoUniversity.Controllers
                 Department deletedDepartment = new Department();
                 TryUpdateModel(deletedDepartment, fieldsToBind);
                 ModelState.AddModelError(string.Empty, "Unable to save changes. The department was deleted by another user.");
-                ViewBag.InstructorID = new SelectList(UoW.Instructors.GetAll(), "Id", "FullName", deletedDepartment.Id);
+
+                ViewBag.InstructorID = UoW.Instructors.GetAll().ToSelectList(
+                    selectedId: deletedDepartment.InstructorId,
+                    textMember: "FullName"
+                );
+
                 return View(deletedDepartment);
             }
 
@@ -124,9 +136,7 @@ namespace ContosoUniversity.Controllers
                 {
                     departmentToUpdate.RowVersion = rowVersion;
                     await UoW.CommitAsync();
-                    //db.Entry(departmentToUpdate).OriginalValues["RowVersion"] = rowVersion;
-                    //await db.SaveChangesAsync();
-
+                    
                     return RedirectToAction("Index");
                 }
                 catch (DbUpdateConcurrencyException ex)
@@ -171,7 +181,10 @@ namespace ContosoUniversity.Controllers
                 }
             }
 
-            ViewBag.InstructorID = new SelectList(UoW.Instructors.GetAll(), "Id", "FullName", departmentToUpdate.InstructorId);
+            ViewBag.InstructorID = UoW.Instructors.GetAll().ToSelectList(
+                selectedId: departmentToUpdate.InstructorId,
+                textMember: "FullName"
+            );
 
             return View(departmentToUpdate);
         }

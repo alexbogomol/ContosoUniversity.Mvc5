@@ -1,14 +1,19 @@
 ﻿using ContosoUniversity.Models;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.DataAccess.Repositories
 {
     public class DepartmentsRepository : EfAsyncRepository<Department>
     {
         public DepartmentsRepository(DbContext context) : base(context) { }
+
+        public override IQueryable<Department> GetAll()
+        {
+            return DbSet.OrderBy(d => d.Name);
+        }
 
         public override async Task<IEnumerable<Department>> GetAllAsync()
         {

@@ -23,9 +23,10 @@ namespace ContosoUniversity.Controllers
         {
             return View(new CoursesListViewModel
             {
-                DepartmentSelectList = UoW.Departments.GetAll().ToSelectList(departmentFilter),
-                Courses = UoW.Courses
-                             .GetByDepartment(departmentFilter)
+                DepartmentSelectList = UoW.Departments.GetAll()
+                                          .ToSelectList(departmentFilter),
+
+                Courses = UoW.Courses.GetByDepartment(departmentFilter)
                              .OrderBy(course => course.Id)
                              .AsQueryable()
                              .Project().To<CourseDetailsViewModel>()

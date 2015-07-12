@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Contracts\IRepositoryExtentions.cs" />
     <Compile Include="Repositories\EnrollmentsRepository.cs" />
     <Compile Include="Repositories\InstructorsRepository.cs" />
     <Compile Include="Repositories\StudentsRepository.cs" />

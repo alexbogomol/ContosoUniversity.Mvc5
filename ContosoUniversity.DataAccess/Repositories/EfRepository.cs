@@ -31,13 +31,12 @@ namespace ContosoUniversity.DataAccess.Repositories
 
         public virtual IQueryable<T> GetAll()
         {
-            return DbSet;
+            return Query(query => query);
         }
 
         public virtual T GetById(int id)
         {
-            //return DbSet.FirstOrDefault(PredicateBuilder.GetByIdPredicate<T>(id));
-            return DbSet.Find(id);
+            return Query(query => DbSet.Find(id));
         }
 
         public virtual void Add(T entity)
@@ -82,6 +81,16 @@ namespace ContosoUniversity.DataAccess.Repositories
             var entity = GetById(id);
             if (entity == null) return; // not found; assume already deleted.
             Delete(entity);
+        }
+
+        public IQueryable<T> Query(Func<IQueryable<T>, IQueryable<T>> query)
+        {
+            return query(DbSet);
+        }
+
+        public TResult Query<TResult>(Func<IQueryable<T>, TResult> query)
+        {
+            return query(DbSet);
         }
     }
 }

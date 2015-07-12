@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace ContosoUniversity.DataAccess.Contracts
 {
@@ -17,5 +18,8 @@ namespace ContosoUniversity.DataAccess.Contracts
         void Update(T entity);
         void Delete(T entity);
         void Delete(int id);
+
+        IQueryable<T> Query(Func<IQueryable<T>, IQueryable<T>> query);
+        TResult Query<TResult>(Func<IQueryable<T>, TResult> query);
     }
 }

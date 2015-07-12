@@ -21,14 +21,16 @@ namespace ContosoUniversity.Controllers
         // GET: Course
         public ActionResult Index(int? departmentFilter)
         {
+            int id = departmentFilter.GetValueOrDefault();
+
             return View(new CoursesListViewModel
             {
                 DepartmentSelectList = UoW.Departments.GetAll()
                                           .ToSelectList(departmentFilter),
 
-                Courses = UoW.Courses.GetByDepartment(departmentFilter)
+                Courses = UoW.Courses
+                             .FindBy(c => !departmentFilter.HasValue || c.DepartmentId == id)
                              .OrderBy(course => course.Id)
-                             .AsQueryable()
                              .Project().To<CourseDetailsViewModel>()
             });
         }

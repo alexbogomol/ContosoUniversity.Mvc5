@@ -168,6 +168,8 @@
     <Compile Include="Infrastructure\Ninject\DataAccessModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Courses\CourseDetailsViewModel.cs" />
+    <Compile Include="ViewModels\Departments\DepartmentDetailsViewModel.cs" />
+    <Compile Include="ViewModels\Departments\DepartmentsListViewModel.cs" />
     <Compile Include="ViewModels\Enrollments\EnrollmentViewModel.cs" />
     <Compile Include="ViewModels\Instructors\AssignedCourseOption.cs" />
     <Compile Include="ViewModels\Courses\CourseEditForm.cs" />

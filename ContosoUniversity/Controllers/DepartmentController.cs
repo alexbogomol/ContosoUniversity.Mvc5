@@ -1,6 +1,8 @@
-﻿using ContosoUniversity.DataAccess.Contracts;
+﻿using AutoMapper;
+using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels;
+using ContosoUniversity.ViewModels.Departments;
 using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -40,7 +42,9 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            return View(department);
+            var viewmodel = Mapper.Map<DepartmentDetailsViewModel>(department);
+
+            return View(viewmodel);
         }
 
         // GET: Department/Create
@@ -217,8 +221,10 @@ namespace ContosoUniversity.Controllers
                     + "record, click the Delete button again. Otherwise "
                     + "click the Back to List hyperlink.";
             }
+            
+            var viewmodel = Mapper.Map<DepartmentDetailsViewModel>(department);
 
-            return View(department);
+            return View(viewmodel);
         }
 
         // POST: Department/Delete/5

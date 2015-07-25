@@ -56,6 +56,10 @@
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Contracts\ISchoolUow.cs" />
     <Compile Include="Contracts\IStudentsRepository.cs" />
+    <Compile Include="Migrations\201507251626166_UpdateModelsAfterViewModels.cs" />
+    <Compile Include="Migrations\201507251626166_UpdateModelsAfterViewModels.Designer.cs">
+      <DependentUpon>201507251626166_UpdateModelsAfterViewModels.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repositories\CoursesRepository.cs" />
     <Compile Include="Repositories\DepartmentsRepository.cs" />
     <Compile Include="Repositories\EfAsyncRepository.cs" />
@@ -134,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201506211714497_Inheritance.resx">
       <DependentUpon>201506211714497_Inheritance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507251626166_UpdateModelsAfterViewModels.resx">
+      <DependentUpon>201507251626166_UpdateModelsAfterViewModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

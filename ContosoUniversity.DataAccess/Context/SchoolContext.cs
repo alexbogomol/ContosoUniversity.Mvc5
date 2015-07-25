@@ -22,14 +22,14 @@ namespace ContosoUniversity.DataAccess
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
+            /*
             modelBuilder.Entity<Course>()
                 .HasMany(course => course.Instructors)
                 .WithMany(instructor => instructor.Courses)
                 .Map(tbl => tbl.MapLeftKey("CourseId")
                                .MapRightKey("InstructorId")
                                .ToTable("CourseInstructor"));
-
+            */
             modelBuilder.Entity<Department>()
                 .MapToStoredProcedures();
             //    .Property(dpt => dpt.RowVersion).IsConcurrencyToken();

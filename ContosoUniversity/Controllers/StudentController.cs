@@ -22,9 +22,12 @@ namespace ContosoUniversity.Controllers
         // GET: Student
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
+            var viewmodel = new StudentsListViewModel
+            {
+                CurrentSort = sortOrder,
+                NameSortParm = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "",
+                DateSortParm = sortOrder == "Date" ? "date_desc" : "Date"
+            };
 
             if (searchString != null)
             {
@@ -35,7 +38,7 @@ namespace ContosoUniversity.Controllers
                 searchString = currentFilter;
             }
 
-            ViewBag.CurrentFilter = searchString;
+            viewmodel.CurrentFilter = searchString;
 
             var students = UoW.Students.GetAll();
 
@@ -64,7 +67,9 @@ namespace ContosoUniversity.Controllers
             int pageSize = 3;
             int pageNumber = (page ?? 1);
 
-            return View(students.ToPagedList(pageNumber, pageSize));
+            viewmodel.StudentsList = students.ToPagedList(pageNumber, pageSize);
+
+            return View(viewmodel);
         }
 
         // GET: Student/Details/5

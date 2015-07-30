@@ -183,6 +183,7 @@
     <Compile Include="ViewModels\Students\StudentDetailsViewModel.cs" />
     <Compile Include="ViewModels\Students\StudentEditForm.cs" />
     <Compile Include="ViewModels\Students\StudentCreateForm.cs" />
+    <Compile Include="ViewModels\Students\StudentsListViewModel.cs" />
     <Compile Include="ViewModels\ViewModelsExtentions.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,10 +1,12 @@
-﻿using ContosoUniversity.Controllers;
+﻿using ContosoUniversity.Config;
+using ContosoUniversity.Controllers;
 using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels.Students;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using TestStack.FluentMVCTesting;
 
@@ -21,6 +23,8 @@ namespace ContosoUniversity.UnitTests.ControllerTests
         [TestFixtureSetUp]
         public void Initialize()
         {
+            AutoMapperConfig.Init();
+
             studentslist = (new Student[]
             {
                 new Student { Id = 1, LastName = "Student1" },
@@ -33,6 +37,8 @@ namespace ContosoUniversity.UnitTests.ControllerTests
             studentsrepo = new Mock<IStudentsRepository>();
             studentsrepo.Setup(repo => repo.GetAll())
                         .Returns(studentslist);
+            studentsrepo.Setup(repo => repo.GetById(It.IsAny<int>()))
+                        .Returns((int id) => studentslist.Where(s => s.Id == id).SingleOrDefault());
 
             uow = new Mock<ISchoolUow>();
             uow.Setup(uow => uow.Students).Returns(studentsrepo.Object);
@@ -74,6 +80,31 @@ namespace ContosoUniversity.UnitTests.ControllerTests
             Assert.That(viewmodel.StudentsList.PageSize == 3);
             Assert.That(viewmodel.StudentsList[0].Id == 4);
             Assert.That(viewmodel.StudentsList[1].Id == 5);
+        }
+
+        [Test]
+        public void DetailsShouldReturnBadRequest()
+        {
+            controller.WithCallTo(c => c.Details(null))
+                      .ShouldGiveHttpStatus(HttpStatusCode.BadRequest);
+        }
+
+        [Test]
+        public void DetailsShouldReturnNotFound()
+        {
+            controller.WithCallTo(c => c.Details(12345))
+                      .ShouldGiveHttpStatus(HttpStatusCode.NotFound);
+        }
+
+        [Test]
+        public void DetailsShouldRenderStudent()
+        {
+            var result = controller.Details(3) as ViewResult;
+
+            var viewmodel = result.Model as StudentDetailsViewModel;
+
+            Assert.That(viewmodel.Id == 3);
+            Assert.That(viewmodel.LastName == "Student3");
         }
     }
 }

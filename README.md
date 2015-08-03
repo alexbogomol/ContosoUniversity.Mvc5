@@ -11,7 +11,7 @@ Further development for the ContosoUniversity tutorial, based on the traditional
 * Mixed controller-layer, data-layer and business-domain
 * All things done in a single project
 * Direct `Controller` <=> `DbContext` interaction on controller-layer
-* Complex view generation:
+* Fragile view generation:
   * mixed use of data-access-specific and view-specific metadata
   * massive use of `ViewBag`
   * DRY-breaking select-list generation, etc.

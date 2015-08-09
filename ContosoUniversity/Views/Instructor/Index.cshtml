@@ -4,23 +4,30 @@
     ViewBag.Title = "Instructors";
 }
 
-<h2>@Html.DisplayNameFor(model => Model.InstructorsWidget)</h2>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-@if (Model.InstructorsWidget != null)
+<h2>@Html.DisplayNameFor(model => Model)</h2>
+<p>@Html.ActionLink("Create New", "Create")</p>
+
+@Html.Action("InstructorsWidget", new
 {
-    @Html.Partial("Partials/InstructorsWidget", Model.InstructorsWidget)
+    courseId = Model.CourseId,
+    instructorId = Model.InstructorId
+})
+
+@if (Model.ShowCoursesWidget)
+{
+    <h3>@Html.DisplayNameFor(model => Model.ShowCoursesWidget)</h3>
+    @Html.Action("CoursesWidget", new
+    {
+        courseId = Model.CourseId,
+        instructorId = Model.InstructorId
+    })
 }
 
-@if (Model.CoursesWidget != null)
+@if (Model.ShowEnrollmentsWidget)
 {
-    <h3>@Html.DisplayNameFor(model => Model.CoursesWidget)</h3>
-    @Html.Partial("Partials/CoursesWidget", Model.CoursesWidget)
-}
-
-@if (Model.EnrollmentsWidget != null)
-{
-    <h3>@Html.DisplayNameFor(model => Model.EnrollmentsWidget)</h3>
-    @Html.Partial("Partials/EnrollmentsWidget", Model.EnrollmentsWidget)
+    <h3>@Html.DisplayNameFor(model => Model.ShowEnrollmentsWidget)</h3>
+    @Html.Action("EnrollmentsWidget", new
+    {
+        courseId = Model.CourseId
+    })
 }

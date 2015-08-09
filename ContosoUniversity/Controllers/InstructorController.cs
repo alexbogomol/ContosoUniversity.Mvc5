@@ -26,44 +26,48 @@ namespace ContosoUniversity.Controllers
         {
             var viewModel = new InstructorsListViewModel
             {
-                InstructorsWidget = new InstructorsWidget
-                {
-                    Instructors = UoW.Instructors.GetAll().OrderBy(i => i.LastName)
-                                     .Project().To<InstructorsListItemViewModel>(),
-
-                    InstructorId = instructorId ?? default(int)
-                }
+                InstructorId = instructorId,
+                CourseId = courseId
             };
 
-            // instructor was not selected -> no courses to show
-            if (instructorId == null)
-            {
-                return View(viewModel);
-            }
+            return View(viewModel);
+        }
 
-            viewModel.CoursesWidget = new CoursesWidget
+        [ChildActionOnly]
+        public PartialViewResult InstructorsWidget(int? instructorId, int? courseId)
+        {
+            return PartialView("Partials/InstructorsWidget", new InstructorsWidget
+            {
+                Instructors = UoW.Instructors.GetAll()
+                                 .OrderBy(i => i.LastName)
+                                 .Project().To<InstructorsListItemViewModel>(),
+
+                InstructorId = instructorId.GetValueOrDefault()
+            });
+        }
+
+        [ChildActionOnly]
+        public PartialViewResult CoursesWidget(int? instructorId, int? courseId)
+        {
+            return PartialView("Partials/CoursesWidget", new CoursesWidget
             {
                 Courses = UoW.Courses.GetByInstructor(instructorId)
                              .AsQueryable()
                              .Project().To<CourseDetailsViewModel>(),
 
-                CourseId = courseId ?? default(int)
-            };
+                CourseId = courseId.GetValueOrDefault()
+            });
+        }
 
-            // course was not selected -> no students to show
-            if (courseId == null)
-            {
-                return View(viewModel);
-            }
-
-            viewModel.EnrollmentsWidget = new EnrollmentsWidget
+        [ChildActionOnly]
+        public PartialViewResult EnrollmentsWidget(int? courseId)
+        {
+            return PartialView("Partials/EnrollmentsWidget", new EnrollmentsWidget
             {
                 Enrollments = UoW.Enrollments.GetByCourse(courseId)
                                  .AsQueryable()
                                  .Project().To<EnrollmentViewModel>()
-            };
-
-            return View(viewModel);
+            });
         }
 
         // GET: Instructor/Details/5

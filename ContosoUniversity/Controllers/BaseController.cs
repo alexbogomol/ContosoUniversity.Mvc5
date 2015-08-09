@@ -10,11 +10,16 @@ namespace ContosoUniversity.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (UoW != null && UoW is IDisposable)
+            bool toBeDisposed = UoW != null 
+                             && UoW is IDisposable
+                             && !ControllerContext.IsChildAction;
+
+            if (toBeDisposed)
             {
                 ((IDisposable)UoW).Dispose();
                 UoW = null;
             }
+
             base.Dispose(disposing);
         }
     }

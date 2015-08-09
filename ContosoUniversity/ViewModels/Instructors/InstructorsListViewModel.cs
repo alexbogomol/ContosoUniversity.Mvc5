@@ -1,20 +1,22 @@
 ﻿using ContosoUniversity.ViewModels.Courses;
 using ContosoUniversity.ViewModels.Enrollments;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace ContosoUniversity.ViewModels.Instructors
 {
+    [DisplayName("Instructors available:")]
     public class InstructorsListViewModel
     {
-        [Display(Name = "Instructors available:")]
-        public InstructorsWidget InstructorsWidget { get; set; }
-
         [Display(Name = "Courses, taught by selected instructor:")]
-        public CoursesWidget CoursesWidget { get; set; }
+        public bool ShowCoursesWidget { get { return InstructorId.HasValue; } }
 
         [Display(Name = "Students, enrolled in selected course:")]
-        public EnrollmentsWidget EnrollmentsWidget { get; set; }
+        public bool ShowEnrollmentsWidget { get { return CourseId.HasValue; } }
+
+        public int? InstructorId { get; set; }
+        public int? CourseId { get; set; }
     }
 
     public class InstructorsWidget

@@ -14,7 +14,7 @@
         var selectedRow = (course.Id == Model.CourseId) ? "success" : "";
         <tr class="@selectedRow">
             <td>
-                @Html.ActionLink("Select", "Index", new { courseId = course.Id })
+                @Html.ActionLink("Select", "Index", "Instructor", new { courseId = course.Id, instructorId = Model.InstructorId }, null)
             </td>
             <td>@Html.DisplayFor(model => course.Id)</td>
             <td>@Html.DisplayFor(model => course.Title)</td>

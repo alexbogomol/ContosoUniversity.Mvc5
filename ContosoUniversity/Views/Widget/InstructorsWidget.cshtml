@@ -26,10 +26,10 @@
                 }
             </td>
             <td>
-                @Html.ActionLink("Select",  "Index",   new { instructorId = instructor.Id }) |
-                @Html.ActionLink("Edit",    "Edit",    new { id = instructor.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = instructor.Id }) |
-                @Html.ActionLink("Delete",  "Delete",  new { id = instructor.Id })
+                @Html.ActionLink("Select", "Index", "Instructor", new { instructorId = instructor.Id }, null) |
+                @Html.ActionLink("Edit", "Edit", "Instructor", new { id = instructor.Id }, null) |
+                @Html.ActionLink("Details", "Details", "Instructor", new { id = instructor.Id }, null) |
+                @Html.ActionLink("Delete", "Delete", "Instructor", new { id = instructor.Id }, null)
             </td>
         </tr>
     }

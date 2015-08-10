@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Models;
-using ContosoUniversity.ViewModels.Courses;
-using ContosoUniversity.ViewModels.Enrollments;
 using ContosoUniversity.ViewModels.Instructors;
 using System;
 using System.Collections.Generic;
@@ -31,43 +28,6 @@ namespace ContosoUniversity.Controllers
             };
 
             return View(viewModel);
-        }
-
-        [ChildActionOnly]
-        public PartialViewResult InstructorsWidget(int? instructorId, int? courseId)
-        {
-            return PartialView("Partials/InstructorsWidget", new InstructorsWidget
-            {
-                Instructors = UoW.Instructors.GetAll()
-                                 .OrderBy(i => i.LastName)
-                                 .Project().To<InstructorsListItemViewModel>(),
-
-                InstructorId = instructorId.GetValueOrDefault()
-            });
-        }
-
-        [ChildActionOnly]
-        public PartialViewResult CoursesWidget(int? instructorId, int? courseId)
-        {
-            return PartialView("Partials/CoursesWidget", new CoursesWidget
-            {
-                Courses = UoW.Courses.GetByInstructor(instructorId)
-                             .AsQueryable()
-                             .Project().To<CourseDetailsViewModel>(),
-
-                CourseId = courseId.GetValueOrDefault()
-            });
-        }
-
-        [ChildActionOnly]
-        public PartialViewResult EnrollmentsWidget(int? courseId)
-        {
-            return PartialView("Partials/EnrollmentsWidget", new EnrollmentsWidget
-            {
-                Enrollments = UoW.Enrollments.GetByCourse(courseId)
-                                 .AsQueryable()
-                                 .Project().To<EnrollmentViewModel>()
-            });
         }
 
         // GET: Instructor/Details/5

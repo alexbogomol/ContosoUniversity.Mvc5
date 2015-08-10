@@ -22,13 +22,14 @@ namespace ContosoUniversity.ViewModels.Instructors
     public class InstructorsWidget
     {
         public IEnumerable<InstructorsListItemViewModel> Instructors { get; set; }
-        public int InstructorId { get; set; }
+        public int? InstructorId { get; set; }
     }
 
     public class CoursesWidget
     {
         public IEnumerable<CourseDetailsViewModel> Courses { get; set; }
-        public int CourseId { get; set; }
+        public int? InstructorId { get; set; }
+        public int? CourseId { get; set; }
     }
 
     public class EnrollmentsWidget

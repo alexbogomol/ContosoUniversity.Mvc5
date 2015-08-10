@@ -7,7 +7,7 @@
 <h2>@Html.DisplayNameFor(model => Model)</h2>
 <p>@Html.ActionLink("Create New", "Create")</p>
 
-@Html.Action("InstructorsWidget", new
+@Html.Action("InstructorsWidget", "Widget", new
 {
     courseId = Model.CourseId,
     instructorId = Model.InstructorId
@@ -16,7 +16,7 @@
 @if (Model.ShowCoursesWidget)
 {
     <h3>@Html.DisplayNameFor(model => Model.ShowCoursesWidget)</h3>
-    @Html.Action("CoursesWidget", new
+    @Html.Action("CoursesWidget", "Widget", new
     {
         courseId = Model.CourseId,
         instructorId = Model.InstructorId
@@ -26,7 +26,7 @@
 @if (Model.ShowEnrollmentsWidget)
 {
     <h3>@Html.DisplayNameFor(model => Model.ShowEnrollmentsWidget)</h3>
-    @Html.Action("EnrollmentsWidget", new
+    @Html.Action("EnrollmentsWidget", "Widget", new
     {
         courseId = Model.CourseId
     })

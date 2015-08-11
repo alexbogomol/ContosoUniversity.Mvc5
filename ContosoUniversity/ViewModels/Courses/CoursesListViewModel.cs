@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace ContosoUniversity.ViewModels.Courses
 {
-    public class CoursesListViewModel
+    public class CoursesListViewModel : IHaveDepartmentSelectList
     {
         public SelectList DepartmentSelectList { get; set; }
         

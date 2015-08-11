@@ -3,14 +3,12 @@
 
 namespace ContosoUniversity.Config
 {
-    using System;
-    using System.Web;
-
+    using Infrastructure.Ninject;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
     using Ninject;
     using Ninject.Web.Common;
-    using Infrastructure.Ninject;
+    using System;
+    using System.Web;
 
     public static class NinjectWebCommon
     {
@@ -63,6 +61,7 @@ namespace ContosoUniversity.Config
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Load(new DataAccessModule());
+            kernel.Load(new FiltersModule());
         }
     }
 }

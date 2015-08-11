@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace ContosoUniversity.ViewModels.Courses
 {
-    public class CourseEditForm : IMapFrom<Course>
+    public class CourseEditForm : IMapFrom<Course>, IHaveDepartmentSelectList
     {
         [Display(Name = "Number")]
         public int Id { get; set; }

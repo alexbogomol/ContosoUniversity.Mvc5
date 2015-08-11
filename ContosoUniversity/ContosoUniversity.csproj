@@ -163,14 +163,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Filters\PopulateDepartmentsList.cs" />
     <Compile Include="Infrastructure\Mapping\IHaveCustomMappings.cs" />
     <Compile Include="Infrastructure\Mapping\IMapFrom.cs" />
     <Compile Include="Infrastructure\Ninject\DataAccessModule.cs" />
+    <Compile Include="Infrastructure\Ninject\FiltersModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Courses\CourseDetailsViewModel.cs" />
     <Compile Include="ViewModels\Departments\DepartmentDetailsViewModel.cs" />
     <Compile Include="ViewModels\Departments\DepartmentsListViewModel.cs" />
     <Compile Include="ViewModels\Enrollments\EnrollmentViewModel.cs" />
+    <Compile Include="ViewModels\IHaveDepartmentSelectList.cs" />
     <Compile Include="ViewModels\Instructors\AssignedCourseOption.cs" />
     <Compile Include="ViewModels\Courses\CourseEditForm.cs" />
     <Compile Include="ViewModels\Courses\CourseCreateForm.cs" />

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using ContosoUniversity.DataAccess.Contracts;
+using ContosoUniversity.Filters;
 using ContosoUniversity.Models;
-using ContosoUniversity.ViewModels;
 using ContosoUniversity.ViewModels.Courses;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -19,15 +19,13 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Course
+        [PopulateDepartmentsList]
         public ActionResult Index(int? departmentFilter)
         {
             int id = departmentFilter.GetValueOrDefault();
 
             return View(new CoursesListViewModel
             {
-                DepartmentSelectList = UoW.Departments.GetAll()
-                                          .ToSelectList(departmentFilter),
-
                 Courses = UoW.Courses
                              .FindBy(c => !departmentFilter.HasValue || c.DepartmentId == id)
                              .OrderBy(course => course.Id)
@@ -56,12 +54,10 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Course/Create
+        [PopulateDepartmentsList]
         public ActionResult Create()
         {
-            return View(new CourseCreateForm
-            {
-                DepartmentSelectList = UoW.Departments.GetAll().ToSelectList()
-            });
+            return View(new CourseCreateForm());
         }
 
         // POST: Course/Create
@@ -69,6 +65,7 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PopulateDepartmentsList]
         public ActionResult Create(CourseCreateForm form)
         {
             try
@@ -92,13 +89,12 @@ namespace ContosoUniversity.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.)
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
-            
-            form.DepartmentSelectList = UoW.Departments.GetAll().ToSelectList(form.DepartmentId);
 
             return View(form);
         }
 
         // GET: Course/Edit/5
+        [PopulateDepartmentsList]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -113,11 +109,9 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            var editform = Mapper.Map<CourseEditForm>(course);
+            var form = Mapper.Map<CourseEditForm>(course);
 
-            editform.DepartmentSelectList = UoW.Departments.GetAll().ToSelectList(course.DepartmentId);
-
-            return View(editform);
+            return View(form);
         }
 
         // POST: Course/Edit/5
@@ -125,6 +119,7 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
+        [PopulateDepartmentsList]
         public ActionResult EditPost(CourseEditForm form)
         {
             if (form == null || !ModelState.IsValid)
@@ -155,8 +150,6 @@ namespace ContosoUniversity.Controllers
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
                 }
             }
-            
-            form.DepartmentSelectList = UoW.Departments.GetAll().ToSelectList(form.DepartmentId);
 
             return View(form);
         }

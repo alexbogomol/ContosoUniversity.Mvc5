@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ContosoUniversity.DataAccess.Contracts;
+using ContosoUniversity.Filters;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels;
 using ContosoUniversity.ViewModels.Departments;
@@ -48,12 +49,10 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Department/Create
+        [PopulateInstructorsList]
         public ActionResult Create()
         {
-            ViewBag.InstructorId = UoW.Instructors.GetAll().ToSelectList(
-                textMember: "FullName"
-            );
-            return View();
+            return View(new DepartmentCreateForm());
         }
 
         // POST: Department/Create
@@ -61,21 +60,23 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Name,Budget,StartDate,InstructorId")] Department department)
+        [PopulateInstructorsList]
+        public async Task<ActionResult> Create(DepartmentCreateForm form)
         {
             if (ModelState.IsValid)
             {
-                UoW.Departments.Add(department);
+                UoW.Departments.Add(new Department
+                {
+                    Name = form.Name,
+                    Budget = form.Budget,
+                    StartDate = form.StartDate,
+                    InstructorId = form.InstructorId
+                });
                 await UoW.CommitAsync();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.InstructorId = UoW.Instructors.GetAll().ToSelectList(
-                selectedId: department.InstructorId,
-                textMember: "FullName"
-            );
-
-            return View(department);
+            return View(form);
         }
 
         // GET: Department/Edit/5

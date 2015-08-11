@@ -10,6 +10,7 @@ namespace ContosoUniversity.Infrastructure.Ninject
         public override void Load()
         {
             this.BindFilter<PopulateDepartmentsList>(FilterScope.Action, 0);
+            this.BindFilter<PopulateInstructorsList>(FilterScope.Action, 0);
         }
     }
 }

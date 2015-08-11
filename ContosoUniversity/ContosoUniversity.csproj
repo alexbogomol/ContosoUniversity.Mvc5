@@ -160,6 +160,7 @@
     <Compile Include="Controllers\InstructorController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
+    <Compile Include="Filters\PopulateInstructorsList.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -170,10 +171,12 @@
     <Compile Include="Infrastructure\Ninject\FiltersModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Courses\CourseDetailsViewModel.cs" />
+    <Compile Include="ViewModels\Departments\DepartmentCreateForm.cs" />
     <Compile Include="ViewModels\Departments\DepartmentDetailsViewModel.cs" />
     <Compile Include="ViewModels\Departments\DepartmentsListViewModel.cs" />
     <Compile Include="ViewModels\Enrollments\EnrollmentViewModel.cs" />
     <Compile Include="ViewModels\IHaveDepartmentSelectList.cs" />
+    <Compile Include="ViewModels\IHaveInstructorSelectList.cs" />
     <Compile Include="ViewModels\Instructors\AssignedCourseOption.cs" />
     <Compile Include="ViewModels\Courses\CourseEditForm.cs" />
     <Compile Include="ViewModels\Courses\CourseCreateForm.cs" />

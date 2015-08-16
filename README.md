@@ -34,24 +34,13 @@ Further development for the ContosoUniversity tutorial, based on the traditional
 * Data-layer is accessible for the controller via the ctor-injected implementation of `ISchoolUow`
 * Extending standard repository interface with extension-methods (like **.FindBy()**, **.Query()**, etc.)
 
-##### Relations Between Data Layer Abstractions
+##### Relations Between Data Layer Contracts
 
-```
- {Entity}Repository  : EfAsyncRepository<T>  : EfRepository<T> 
- ==================    ====================    ================
- SpecificOperations    virtual implem-s        virtual implem-s
- ReportingQueries
- methods overrides
-         ^                    ^                  ^
-         |                    |                  |
-I{Entity}Repository  :  IAsyncRepository<T>  :  IRepository<T>
--------------------     -------------------     --------------
-SpecificOperations      .GetAllAsync()          .GetAll()
-ReportingQueries        .GetByIdAsync()         .GetById()
-.etc                                            .Add()
-                                                .Update()
-                                                .Delete()
-```
+![Contracts](/docs/data.layer.contracts.png)
+
+##### Relations Between Data Layer Implementations
+
+![Implementations](/docs/data.layer.impls.png)
 
 #### Controller Layer Concepts
 

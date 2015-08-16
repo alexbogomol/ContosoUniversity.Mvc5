@@ -13,7 +13,8 @@ namespace ContosoUniversity.ViewModels.Courses
 
         [Range(0, 5)]
         public int Credits { get; set; }
-
+        
+        [Display(Name = "Department")]
         public int DepartmentId { get; set; }
 
         public SelectList DepartmentSelectList { get; set; }

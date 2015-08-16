@@ -271,6 +271,11 @@
     <Content Include="Views\Widget\CoursesWidget.cshtml" />
     <Content Include="Views\Widget\InstructorsWidget.cshtml" />
     <Content Include="Views\Shared\Alerts.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Int32.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ReadOnlyField.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Decimal.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

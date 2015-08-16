@@ -173,6 +173,7 @@
     <Compile Include="ViewModels\Courses\CourseDetailsViewModel.cs" />
     <Compile Include="ViewModels\Departments\DepartmentCreateForm.cs" />
     <Compile Include="ViewModels\Departments\DepartmentDetailsViewModel.cs" />
+    <Compile Include="ViewModels\Departments\DepartmentEditForm.cs" />
     <Compile Include="ViewModels\Departments\DepartmentsListViewModel.cs" />
     <Compile Include="ViewModels\Enrollments\EnrollmentViewModel.cs" />
     <Compile Include="ViewModels\IHaveDepartmentSelectList.cs" />

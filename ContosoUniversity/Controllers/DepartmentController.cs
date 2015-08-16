@@ -2,7 +2,6 @@
 using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Filters;
 using ContosoUniversity.Models;
-using ContosoUniversity.ViewModels;
 using ContosoUniversity.ViewModels.Departments;
 using System.Data;
 using System.Data.Entity.Infrastructure;
@@ -80,6 +79,7 @@ namespace ContosoUniversity.Controllers
         }
 
         // GET: Department/Edit/5
+        [PopulateInstructorsList]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -94,12 +94,9 @@ namespace ContosoUniversity.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.InstructorId = UoW.Instructors.GetAll().ToSelectList(
-                selectedId: department.InstructorId,
-                textMember: "FullName"
-            );
+            var viewmodel = Mapper.Map<DepartmentEditForm>(department);
 
-            return View(department);
+            return View(viewmodel);
         }
 
         // POST: Department/Edit/5
@@ -107,30 +104,30 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int? id, byte[] rowVersion)
+        //public async Task<ActionResult> Edit(int? id, byte[] rowVersion)
+        [PopulateInstructorsList]
+        public async Task<ActionResult> Edit(DepartmentEditForm form)
         {
-            string[] fieldsToBind = new string[] 
+            string[] fieldsToBind = new string[]
             {
                 "Name", "Budget", "StartDate", "InstructorID", "RowVersion"
             };
 
-            if (id == null)
+            if (form == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var departmentToUpdate = await UoW.Departments.GetByIdAsync(id.Value);
+            //var departmentToUpdate = await UoW.Departments.GetByIdAsync(id.Value);
+            var departmentToUpdate = await UoW.Departments.GetByIdAsync(form.Id);
 
             if (departmentToUpdate == null)
             {
                 Department deletedDepartment = new Department();
-                TryUpdateModel(deletedDepartment, fieldsToBind);
-                ModelState.AddModelError(string.Empty, "Unable to save changes. The department was deleted by another user.");
 
-                ViewBag.InstructorID = UoW.Instructors.GetAll().ToSelectList(
-                    selectedId: deletedDepartment.InstructorId,
-                    textMember: "FullName"
-                );
+                TryUpdateModel(deletedDepartment, fieldsToBind);
+
+                ModelState.AddModelError(string.Empty, "Unable to save changes. The department was deleted by another user.");
 
                 return View(deletedDepartment);
             }
@@ -139,7 +136,7 @@ namespace ContosoUniversity.Controllers
             {
                 try
                 {
-                    departmentToUpdate.RowVersion = rowVersion;
+                    departmentToUpdate.RowVersion = form.RowVersion;
                     await UoW.CommitAsync();
                     
                     return RedirectToAction("Index");
@@ -185,11 +182,6 @@ namespace ContosoUniversity.Controllers
                     ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
                 }
             }
-
-            ViewBag.InstructorID = UoW.Instructors.GetAll().ToSelectList(
-                selectedId: departmentToUpdate.InstructorId,
-                textMember: "FullName"
-            );
 
             return View(departmentToUpdate);
         }

@@ -4,6 +4,7 @@ using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Filters;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels.Courses;
+using Microsoft.Web.Mvc;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -80,8 +81,8 @@ namespace ContosoUniversity.Controllers
                         DepartmentId = form.DepartmentId
                     });
                     UoW.Commit();
-
-                    return RedirectToAction("Index");
+                    
+                    return RedirectToAction<CourseController>(c => c.Index(null));
                 }
             }
             catch (RetryLimitExceededException /* dex */)
@@ -142,7 +143,7 @@ namespace ContosoUniversity.Controllers
                 {
                     UoW.Commit();
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction<CourseController>(c => c.Index(null));
                 }
                 catch (RetryLimitExceededException /* dex */)
                 {
@@ -182,7 +183,7 @@ namespace ContosoUniversity.Controllers
             UoW.Courses.Delete(id);
             UoW.Commit();
 
-            return RedirectToAction("Index");
+            return RedirectToAction<CourseController>(c => c.Index(null));
         }
 
         public ActionResult UpdateCourseCredits()

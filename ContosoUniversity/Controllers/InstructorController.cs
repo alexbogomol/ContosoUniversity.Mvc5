@@ -120,7 +120,7 @@ namespace ContosoUniversity.Controllers
                 });
                 UoW.Commit();
 
-                return RedirectToAction("Index");
+                return RedirectToAction<InstructorController>(c => c.Index(null, null));
             }
 
             form.AssignedCourses = GetCoursesCheckList();
@@ -191,7 +191,7 @@ namespace ContosoUniversity.Controllers
 
                     UoW.Commit();
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction<InstructorController>(c => c.Index(null, null));
                 }
                 catch (RetryLimitExceededException /* dex */)
                 {
@@ -280,7 +280,7 @@ namespace ContosoUniversity.Controllers
 
             UoW.Commit();
 
-            return RedirectToAction("Index");
+            return RedirectToAction<InstructorController>(c => c.Index(null, null));
         }
     }
 }

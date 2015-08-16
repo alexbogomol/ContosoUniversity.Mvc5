@@ -119,7 +119,7 @@ namespace ContosoUniversity.Controllers
                         EnrollmentDate = form.EnrollmentDate
                     });
                     UoW.Commit();
-                    return RedirectToAction("Index");
+                    return RedirectToAction<StudentController>(c => c.Index(null, null, null, null));
                 }
             }
             catch (RetryLimitExceededException /* dex */)
@@ -178,7 +178,7 @@ namespace ContosoUniversity.Controllers
                 {
                     UoW.Commit();
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction<StudentController>(c => c.Index(null, null, null, null));
                 }
                 catch (RetryLimitExceededException /* dex */)
                 {
@@ -228,10 +228,10 @@ namespace ContosoUniversity.Controllers
             catch (RetryLimitExceededException /* dex */)
             {
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+                return RedirectToAction<StudentController>(c => c.Delete(id, true));
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction<StudentController>(c => c.Index(null, null, null, null));
         }
     }
 }

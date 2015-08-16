@@ -27,9 +27,31 @@ Further development for the ContosoUniversity tutorial, based on the traditional
   * `EfRepository<T>` - EntityFramework-dependent implementation of `IRepository<T>`
   * `EfAsyncRepository<T>` - async version of `EfRepository<T>`
   * `SchoolUow` - unit-of-work implementation
-* Specific abstractions and implemetations for repositories:
+* Specific abstractions and implemetations for repositories, like:
+  * `ICoursesRepository` - extending `IRepository<Course>`
+  * `IInstructorsRepository` - extending `IRepository<Instructor>`
+  * ...etc
 * Data-layer is accessible for the controller via the ctor-injected implementation of `ISchoolUow`
 * Extending standard repository interface with extension-methods (like **.FindBy()**, **.Query()**, etc.)
+
+##### Relations Between Data Layer Abstractions
+
+```
+ {Entity}Repository  : EfAsyncRepository<T>  : EfRepository<T> 
+ ==================    ====================    ================
+ SpecificOperations    virtual implem-s        virtual implem-s
+ ReportingQueries
+ methods overrides
+         ^                    ^                  ^
+         |                    |                  |
+I{Entity}Repository  :  IAsyncRepository<T>  :  IRepository<T>
+-------------------     -------------------     --------------
+SpecificOperations      .GetAllAsync()          .GetAll()
+ReportingQueries        .GetByIdAsync()         .GetById()
+.etc                                            .Add()
+                                                .Update()
+                                                .Delete()
+```
 
 #### Controller Layer Concepts
 

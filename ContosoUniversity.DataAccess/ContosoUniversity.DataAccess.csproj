@@ -110,6 +110,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Relations.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ContosoUniversity.Models\ContosoUniversity.Models.csproj">

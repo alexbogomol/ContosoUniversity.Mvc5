@@ -29,5 +29,10 @@ namespace ContosoUniversity.ViewModels.Instructors
         [StringLength(50)]
         [Display(Name = "Office Location")]
         public string OfficeAssignmentLocation { get; set; }
+
+        public bool HasAssignedOffice
+        {
+            get { return !string.IsNullOrWhiteSpace(OfficeAssignmentLocation); }
+        }
     }
 }

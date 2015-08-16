@@ -169,6 +169,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Filters\PopulateDepartmentsList.cs" />
+    <Compile Include="Infrastructure\Alerts\Alert.cs" />
+    <Compile Include="Infrastructure\Alerts\AlertDecoratorResult.cs" />
+    <Compile Include="Infrastructure\Alerts\AlertExtensions.cs" />
     <Compile Include="Infrastructure\Mapping\IHaveCustomMappings.cs" />
     <Compile Include="Infrastructure\Mapping\IMapFrom.cs" />
     <Compile Include="Infrastructure\Ninject\DataAccessModule.cs" />
@@ -267,6 +270,7 @@
     <Content Include="Views\Widget\EnrollmentsWidget.cshtml" />
     <Content Include="Views\Widget\CoursesWidget.cshtml" />
     <Content Include="Views\Widget\InstructorsWidget.cshtml" />
+    <Content Include="Views\Shared\Alerts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -2,9 +2,9 @@
 using AutoMapper.QueryableExtensions;
 using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Filters;
+using ContosoUniversity.Infrastructure.Alerts;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels.Courses;
-using Microsoft.Web.Mvc;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -82,7 +82,8 @@ namespace ContosoUniversity.Controllers
                     });
                     UoW.Commit();
                     
-                    return RedirectToAction<CourseController>(c => c.Index(null));
+                    return RedirectToAction<CourseController>(c => c.Index(null))
+                            .WithSuccess("Course Created Successfully!");
                 }
             }
             catch (RetryLimitExceededException /* dex */)
@@ -91,7 +92,7 @@ namespace ContosoUniversity.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
             }
 
-            return View(form);
+            return View(form).WithError("Error occured! Look at the info below.");
         }
 
         // GET: Course/Edit/5
@@ -143,7 +144,8 @@ namespace ContosoUniversity.Controllers
                 {
                     UoW.Commit();
 
-                    return RedirectToAction<CourseController>(c => c.Index(null));
+                    return RedirectToAction<CourseController>(c => c.Index(null))
+                            .WithSuccess("Course Updated Successfully!");
                 }
                 catch (RetryLimitExceededException /* dex */)
                 {
@@ -152,7 +154,7 @@ namespace ContosoUniversity.Controllers
                 }
             }
 
-            return View(form);
+            return View(form).WithError("Error occured! Look at the info below.");
         }
 
         // GET: Course/Delete/5
@@ -183,7 +185,8 @@ namespace ContosoUniversity.Controllers
             UoW.Courses.Delete(id);
             UoW.Commit();
 
-            return RedirectToAction<CourseController>(c => c.Index(null));
+            return RedirectToAction<CourseController>(c => c.Index(null))
+                            .WithSuccess("Course Deleted Successfully!");
         }
 
         public ActionResult UpdateCourseCredits()

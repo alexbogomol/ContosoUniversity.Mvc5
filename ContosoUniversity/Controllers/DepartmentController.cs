@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ContosoUniversity.DataAccess.Contracts;
 using ContosoUniversity.Filters;
+using ContosoUniversity.Infrastructure.Alerts;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels.Departments;
 using System.Data;
@@ -71,8 +72,11 @@ namespace ContosoUniversity.Controllers
                     StartDate = form.StartDate,
                     InstructorId = form.InstructorId
                 });
+
                 await UoW.CommitAsync();
-                return RedirectToAction("Index");
+
+                return RedirectToAction("Index")
+                        .WithSuccess("Department Created Successfully!");
             }
 
             return View(form);
@@ -104,7 +108,6 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Edit(int? id, byte[] rowVersion)
         [PopulateInstructorsList]
         public async Task<ActionResult> Edit(DepartmentEditForm form)
         {
@@ -117,8 +120,7 @@ namespace ContosoUniversity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            //var departmentToUpdate = await UoW.Departments.GetByIdAsync(id.Value);
+            
             var departmentToUpdate = await UoW.Departments.GetByIdAsync(form.Id);
 
             if (departmentToUpdate == null)
@@ -129,7 +131,7 @@ namespace ContosoUniversity.Controllers
 
                 ModelState.AddModelError(string.Empty, "Unable to save changes. The department was deleted by another user.");
 
-                return View(deletedDepartment);
+                return View(deletedDepartment).WithError("Error occured! Look at the info below.");
             }
 
             if (TryUpdateModel(departmentToUpdate, fieldsToBind))
@@ -137,9 +139,11 @@ namespace ContosoUniversity.Controllers
                 try
                 {
                     departmentToUpdate.RowVersion = form.RowVersion;
+
                     await UoW.CommitAsync();
                     
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index")
+                        .WithSuccess("Department Updated Successfully!");
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -183,7 +187,7 @@ namespace ContosoUniversity.Controllers
                 }
             }
 
-            return View(departmentToUpdate);
+            return View(departmentToUpdate).WithError("Error occured! Look at the info below.");
         }
 
         // GET: Department/Delete/5
@@ -229,17 +233,19 @@ namespace ContosoUniversity.Controllers
             {
                 UoW.Departments.Delete(department);
                 await UoW.CommitAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index")
+                        .WithSuccess("Department Deleted Successfully!");
             }
             catch (DbUpdateConcurrencyException)
             {
-                return RedirectToAction("Delete", new { concurrencyError = true, id = department.Id });
+                return RedirectToAction("Delete", new { concurrencyError = true, id = department.Id })
+                    .WithError("Error occured! Look at the info below.");
             }
             catch (DataException /* dex */)
             {
                 //Log the error (uncomment dex variable name after DataException and add a line here to write a log.
                 ModelState.AddModelError(string.Empty, "Unable to delete. Try again, and if the problem persists contact your system administrator.");
-                return View(department);
+                return View(department).WithError("Error occured! Look at the info below.");
             }
         }
     }

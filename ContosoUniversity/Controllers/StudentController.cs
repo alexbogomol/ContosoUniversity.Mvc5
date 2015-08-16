@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ContosoUniversity.DataAccess.Contracts;
+using ContosoUniversity.Infrastructure.Alerts;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels.Students;
 using PagedList;
@@ -118,8 +119,11 @@ namespace ContosoUniversity.Controllers
                         FirstMidName = form.FirstMidName,
                         EnrollmentDate = form.EnrollmentDate
                     });
+
                     UoW.Commit();
-                    return RedirectToAction<StudentController>(c => c.Index(null, null, null, null));
+
+                    return RedirectToAction<StudentController>(c => c.Index(null, null, null, null))
+                        .WithSuccess("Student Created Successfully!");
                 }
             }
             catch (RetryLimitExceededException /* dex */)
@@ -128,7 +132,7 @@ namespace ContosoUniversity.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
-            return View(form);
+            return View(form).WithError("Error occured! Look at the info below.");
         }
 
         // GET: Student/Edit/5
@@ -178,7 +182,8 @@ namespace ContosoUniversity.Controllers
                 {
                     UoW.Commit();
 
-                    return RedirectToAction<StudentController>(c => c.Index(null, null, null, null));
+                    return RedirectToAction<StudentController>(c => c.Index(null, null, null, null))
+                        .WithSuccess("Instructor Updated Successfully!");
                 }
                 catch (RetryLimitExceededException /* dex */)
                 {
@@ -187,7 +192,7 @@ namespace ContosoUniversity.Controllers
                 }
             }
 
-            return View(updatee);
+            return View(updatee).WithError("Error occured! Look at the info below.");
         }
 
         // GET: Student/Delete/5
@@ -228,10 +233,12 @@ namespace ContosoUniversity.Controllers
             catch (RetryLimitExceededException /* dex */)
             {
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                return RedirectToAction<StudentController>(c => c.Delete(id, true));
+                return RedirectToAction<StudentController>(c => c.Delete(id, true))
+                    .WithError("Error occured! Look at the info below.");
             }
 
-            return RedirectToAction<StudentController>(c => c.Index(null, null, null, null));
+            return RedirectToAction<StudentController>(c => c.Index(null, null, null, null))
+                        .WithSuccess("Instructor Deleted Successfully!");
         }
     }
 }

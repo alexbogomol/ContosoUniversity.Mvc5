@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ContosoUniversity.DataAccess.Contracts;
+using ContosoUniversity.Infrastructure.Alerts;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels.Instructors;
 using System;
@@ -100,7 +101,7 @@ namespace ContosoUniversity.Controllers
 
             OfficeAssignment office = null;
 
-            if (!string.IsNullOrWhiteSpace(form.OfficeAssignmentLocation))
+            if (form.HasAssignedOffice)
             {
                 office = new OfficeAssignment
                 {
@@ -120,12 +121,13 @@ namespace ContosoUniversity.Controllers
                 });
                 UoW.Commit();
 
-                return RedirectToAction<InstructorController>(c => c.Index(null, null));
+                return RedirectToAction<InstructorController>(c => c.Index(null, null))
+                        .WithSuccess("Instructor Created Successfully!");
             }
 
             form.AssignedCourses = GetCoursesCheckList();
 
-            return View(form);
+            return View(form).WithError("Error occured! Look at the info below.");
         }
 
         // GET: Instructor/Edit/5
@@ -191,7 +193,8 @@ namespace ContosoUniversity.Controllers
 
                     UoW.Commit();
 
-                    return RedirectToAction<InstructorController>(c => c.Index(null, null));
+                    return RedirectToAction<InstructorController>(c => c.Index(null, null))
+                        .WithSuccess("Instructor Edited Successfully!");
                 }
                 catch (RetryLimitExceededException /* dex */)
                 {
@@ -202,7 +205,7 @@ namespace ContosoUniversity.Controllers
 
             form.AssignedCourses = GetCoursesCheckList(form.Id);
 
-            return View(form);
+            return View(form).WithError("Error occured! Look at the info below.");
         }
 
         private void UpdateInstructorCourses(int[] selectedCourses, Instructor instructorToUpdate)
@@ -280,7 +283,8 @@ namespace ContosoUniversity.Controllers
 
             UoW.Commit();
 
-            return RedirectToAction<InstructorController>(c => c.Index(null, null));
+            return RedirectToAction<InstructorController>(c => c.Index(null, null))
+                        .WithSuccess("Instructor Deleted Successfully!");
         }
     }
 }

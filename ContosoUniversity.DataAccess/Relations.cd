@@ -12,12 +12,12 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="ContosoUniversity.DataAccess.Repositories.EfAsyncRepository&lt;T&gt;">
-    <Position X="13.5" Y="1.25" Width="2" />
+    <Position X="13.75" Y="1.25" Width="2" />
     <InheritanceLine Type="ContosoUniversity.DataAccess.Repositories.EfRepository&lt;T&gt;" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="12.25" Y="0.937" />
-        <Point X="13.688" Y="0.937" />
-        <Point X="13.688" Y="1.25" />
+        <Point X="13.938" Y="0.937" />
+        <Point X="13.938" Y="1.25" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -27,11 +27,11 @@
     <Lollipop Position="0.377" />
   </Class>
   <Class Name="ContosoUniversity.DataAccess.Repositories.DepartmentsRepository">
-    <Position X="14.25" Y="4" Width="2" />
+    <Position X="13.75" Y="3.75" Width="2" />
     <InheritanceLine Type="ContosoUniversity.DataAccess.Repositories.EfAsyncRepository&lt;T&gt;" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="15.125" Y="2.867" />
-        <Point X="15.125" Y="4" />
+        <Point X="14.625" Y="2.867" />
+        <Point X="14.625" Y="3.75" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -40,11 +40,11 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ContosoUniversity.DataAccess.Repositories.CoursesRepository">
-    <Position X="12" Y="4" Width="1.75" />
+    <Position X="11.75" Y="3.75" Width="1.75" />
     <InheritanceLine Type="ContosoUniversity.DataAccess.Repositories.EfRepository&lt;T&gt;" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="12.125" Y="3.209" />
-        <Point X="12.125" Y="4" />
+        <Point X="11.875" Y="3.209" />
+        <Point X="11.875" Y="3.75" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -54,11 +54,11 @@
     <Lollipop Position="0.408" />
   </Class>
   <Class Name="ContosoUniversity.DataAccess.Repositories.EnrollmentsRepository">
-    <Position X="8.75" Y="4" Width="2" />
+    <Position X="9" Y="3.75" Width="2" />
     <InheritanceLine Type="ContosoUniversity.DataAccess.Repositories.EfRepository&lt;T&gt;" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="10.625" Y="3.209" />
-        <Point X="10.625" Y="4" />
+        <Point X="10.875" Y="3.209" />
+        <Point X="10.875" Y="3.75" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -68,13 +68,13 @@
     <Lollipop Position="0.1" />
   </Class>
   <Class Name="ContosoUniversity.DataAccess.Repositories.StudentsRepository">
-    <Position X="9.25" Y="6.5" Width="2" />
+    <Position X="9" Y="6.25" Width="2" />
     <InheritanceLine Type="ContosoUniversity.DataAccess.Repositories.EfRepository&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.125" Y="3.209" />
-        <Point X="11.125" Y="4.854" />
-        <Point X="11.125" Y="4.854" />
-        <Point X="11.125" Y="6.5" />
+        <Point X="11.25" Y="3.209" />
+        <Point X="11.25" Y="5.677" />
+        <Point X="10.75" Y="5.677" />
+        <Point X="10.75" Y="6.25" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -84,20 +84,20 @@
     <Lollipop Position="0.273" />
   </Class>
   <Class Name="ContosoUniversity.DataAccess.Repositories.InstructorsRepository">
-    <Position X="11.5" Y="6.5" Width="1.75" />
+    <Position X="11.25" Y="6.25" Width="1.75" />
     <InheritanceLine Type="ContosoUniversity.DataAccess.Repositories.EfRepository&lt;T&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.625" Y="3.209" />
-        <Point X="11.625" Y="4.854" />
-        <Point X="11.625" Y="4.854" />
-        <Point X="11.625" Y="6.5" />
+        <Point X="11.5" Y="3.209" />
+        <Point X="11.5" Y="5.667" />
+        <Point X="11.5" Y="5.667" />
+        <Point X="11.5" Y="6.25" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAgAAAAAAAIA=</HashCode>
       <FileName>Repositories\InstructorsRepository.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.356" />
+    <Lollipop Position="0.398" />
   </Class>
   <Interface Name="ContosoUniversity.DataAccess.Contracts.IRepository&lt;T&gt;">
     <Position X="2.75" Y="0.5" Width="1.75" />

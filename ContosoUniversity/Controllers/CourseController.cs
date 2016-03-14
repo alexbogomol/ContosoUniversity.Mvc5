@@ -30,7 +30,7 @@ namespace ContosoUniversity.Controllers
                 Courses = UoW.Courses
                              .FindBy(c => !departmentFilter.HasValue || c.DepartmentId == id)
                              .OrderBy(course => course.Id)
-                             .Project().To<CourseDetailsViewModel>()
+                             .ProjectTo<CourseDetailsViewModel>()
             });
         }
 

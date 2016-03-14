@@ -9,6 +9,8 @@ namespace ContosoUniversity.Config
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.LowercaseUrls = true;
+
             routes.MapRoute(
                 name: "InstructorMasterDetail",
                 url: "{controller}/{instructorId}/Course/{courseId}",

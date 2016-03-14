@@ -22,7 +22,7 @@ namespace ContosoUniversity.Controllers
             {
                 Instructors = UoW.Instructors.GetAll()
                                  .OrderBy(i => i.LastName)
-                                 .Project().To<InstructorsListItemViewModel>(),
+                                 .ProjectTo<InstructorsListItemViewModel>(),
 
                 InstructorId = instructorId
             });
@@ -35,7 +35,7 @@ namespace ContosoUniversity.Controllers
             {
                 Courses = UoW.Courses.GetByInstructor(instructorId)
                              .AsQueryable()
-                             .Project().To<CourseDetailsViewModel>(),
+                             .ProjectTo<CourseDetailsViewModel>(),
 
                 InstructorId = instructorId,
 
@@ -50,7 +50,7 @@ namespace ContosoUniversity.Controllers
             {
                 Enrollments = UoW.Enrollments.GetByCourse(courseId)
                                  .AsQueryable()
-                                 .Project().To<EnrollmentViewModel>()
+                                 .ProjectTo<EnrollmentViewModel>()
             });
         }
     }

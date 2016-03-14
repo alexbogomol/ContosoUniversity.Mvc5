@@ -22,4 +22,20 @@ namespace ContosoUniversity.DataAccess.Contracts
         IQueryable<T> Query(Func<IQueryable<T>, IQueryable<T>> query);
         TResult Query<TResult>(Func<IQueryable<T>, TResult> query);
     }
+
+    /*
+    Discussion (https://youtu.be/rtXpYpZdOzM)
+        - Add(obj)
+        - Remove(obj)
+        - Get(id)
+        - GetAll()
+        - Find(predicate)
+    (!) No 'Update' here
+
+    var course = collection.Get(1);
+    course.Name = "New Name";
+
+    (bad!) collection.Update(course);
+
+    */
 }

@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
-using ContosoUniversity.Infrastructure.Autofac;
 using System.Reflection;
 using System.Web.Mvc;
 
@@ -28,7 +27,8 @@ namespace ContosoUniversity.Config
             // OPTIONAL: Enable property injection into action filters.
             builder.RegisterFilterProvider();
 
-            builder.RegisterModule<DataAccessModule>();
+            // grab all the modules (available here) and register them
+            builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();

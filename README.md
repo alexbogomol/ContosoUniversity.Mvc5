@@ -3,8 +3,8 @@
 Further development for the ContosoUniversity tutorial, based on the traditional **Asp.Net 4.6** stack:
 * Mvc 5
 * Entity Framework 6
-* Ninject
-* AutoMapper
+* [Autofac](https://github.com/autofac)
+* [AutoMapper](https://github.com/automapper)
 
 #### General Issues on Original Project State
 

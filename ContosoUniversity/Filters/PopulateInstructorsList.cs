@@ -6,7 +6,14 @@ namespace ContosoUniversity.Filters
 {
     public class PopulateInstructorsList : ActionFilterAttribute
     {
-        public ISchoolUow UoW { get; set; }
+        private readonly ISchoolUow UoW;
+
+        public PopulateInstructorsList() { }
+
+        public PopulateInstructorsList(ISchoolUow uow)
+        {
+            UoW = uow;
+        }
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {

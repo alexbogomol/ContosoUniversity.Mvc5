@@ -14,8 +14,6 @@ namespace ContosoUniversity
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            AutofacConfig.Init();
-
             // init all mapping registrations
             AutoMapperConfig.Init();
         }

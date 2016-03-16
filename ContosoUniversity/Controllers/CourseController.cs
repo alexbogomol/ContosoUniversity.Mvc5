@@ -182,7 +182,7 @@ namespace ContosoUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            UoW.Courses.Delete(id);
+            UoW.Courses.Remove(id);
             UoW.Commit();
 
             return RedirectToAction<CourseController>(c => c.Index(null))

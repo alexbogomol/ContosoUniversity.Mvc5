@@ -267,10 +267,10 @@ namespace ContosoUniversity.Controllers
 
             if (instructor.OfficeAssignment != null)
             {
-                UoW.OfficeAssignments.Delete(instructor.OfficeAssignment);
+                UoW.OfficeAssignments.Remove(instructor.OfficeAssignment);
             }
             
-            UoW.Instructors.Delete(instructor);
+            UoW.Instructors.Remove(instructor);
 
             var department = UoW.Departments.GetAll()
                                 .Where(d => d.InstructorId == id)

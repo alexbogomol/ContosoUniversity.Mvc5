@@ -227,7 +227,7 @@ namespace ContosoUniversity.Controllers
         {
             try
             {
-                UoW.Students.Delete(id);
+                UoW.Students.Remove(id);
                 UoW.Commit();
             }
             catch (RetryLimitExceededException /* dex */)

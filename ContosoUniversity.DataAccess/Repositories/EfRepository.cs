@@ -52,17 +52,7 @@ namespace ContosoUniversity.DataAccess.Repositories
             }
         }
 
-        public virtual void Update(T entity)
-        {
-            DbEntityEntry dbEntityEntry = DbContext.Entry(entity);
-            if (dbEntityEntry.State == EntityState.Detached)
-            {
-                DbSet.Attach(entity);
-            }
-            dbEntityEntry.State = EntityState.Modified;
-        }
-
-        public virtual void Delete(T entity)
+        public virtual void Remove(T entity)
         {
             DbEntityEntry dbEntityEntry = DbContext.Entry(entity);
             if (dbEntityEntry.State != EntityState.Deleted)
@@ -76,11 +66,11 @@ namespace ContosoUniversity.DataAccess.Repositories
             }
         }
 
-        public virtual void Delete(int id)
+        public virtual void Remove(int id)
         {
             var entity = GetById(id);
             if (entity == null) return; // not found; assume already deleted.
-            Delete(entity);
+            Remove(entity);
         }
 
         public IQueryable<T> Query(Func<IQueryable<T>, IQueryable<T>> query)

@@ -231,7 +231,7 @@ namespace ContosoUniversity.Controllers
         {
             try
             {
-                UoW.Departments.Delete(department);
+                UoW.Departments.Remove(department);
                 await UoW.CommitAsync();
                 return RedirectToAction("Index")
                         .WithSuccess("Department Deleted Successfully!");
